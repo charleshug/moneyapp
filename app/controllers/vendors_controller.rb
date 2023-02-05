@@ -5,7 +5,7 @@ class VendorsController < ApplicationController
   end
 
   def create
-    @vendor = Vendor.new
+    @vendor = Vendor.new(vendor_params)
     if @vendor.save
       redirect_to vendors_path
     else

@@ -3,3 +3,4 @@
 <%= form_with(model: @vendor, local:true, method: "delete") do |f| %>
   <%= f.submit 'Delete' %>
 <% end %>
+<%= link_to 'Vendors Index', vendors_path %>
