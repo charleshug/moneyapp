@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root "budgets#index"
+  resources :reports
   resources :ledgers, only: [:index, :edit, :update]
   get 'budgets/index'
   get 'categories/index'

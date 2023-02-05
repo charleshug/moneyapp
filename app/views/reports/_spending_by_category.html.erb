@@ -1,0 +1,22 @@
+<div class="flex items-stretch flex-col md:flex-row">
+  <div id="chart" class='px-2 grow'>
+    <%= pie_chart data, donut: true, thousands: ",", title: 'Spending By Category' %>
+  </div>
+
+  <div id="data-table" class="px-4 table border bg-[#4a575e]">
+    <div class="table-header-group">
+      <div class="table-row text-[#aaacab]">
+        <div class="table-cell align-bottom">Category</div>
+        <div class="table-cell align-bottom text-center">Amount</div>
+      </div>
+    </div>
+    <div class="table-row-group">
+      <% data.each do |key,value| %>
+        <div class="table-row text-white">
+          <div class="table-cell px-2 whitespace-nowrap "><%= key %></div>
+          <div class="table-cell px-2 text-right"><%= number_to_currency(value, unit:"", delimiter: ",") %></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

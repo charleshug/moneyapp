@@ -1,0 +1,27 @@
+<div class="flex items-stretch flex-col md:flex-row">
+  <div id="chart" class='px-2 grow'>
+    <%= line_chart data, min: nil, curve:false, thousands: ',', round: 2, title: 'Net Worth' %>
+  </div>
+
+  <div id="data-table" class="px-4 table border bg-[#4a575e]">
+    <div class="table-header-group">
+      <div class="table-row text-[#aaacab]">
+        <div class="table-cell align-bottom">Month</div>
+        <div class="table-cell align-bottom text-center">Change</div>
+        <div class="table-cell align-bottom text-center">Net Worth</div>
+      </div>
+    </div>
+    <div class="table-row-group">
+    <% previous = 0 %>
+      <% data.each do |key,value| %>
+        <% change = value - previous %>
+        <div class="table-row text-white">
+          <div class="table-cell px-2 whitespace-nowrap "><%= key %></div>
+          <div class="table-cell px-2 text-right"><%= number_to_currency(change, unit:"", delimiter: ",") %></div>
+          <div class="table-cell px-2 text-right"><%= number_to_currency(value, unit:"$", delimiter: ",") %></div>
+        </div>
+        <% previous = value %>
+      <% end %>
+    </div>
+  </div>
+</div>
