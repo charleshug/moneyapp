@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_05_181654) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_05_181916) do
   create_table "accounts", force: :cascade do |t|
     t.string "name", null: false
     t.integer "balance", default: 0, null: false
@@ -18,6 +18,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_05_181654) do
     t.boolean "closed", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "parent_id"
+    t.boolean "hidden", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hidden"], name: "index_categories_on_hidden"
+    t.index ["name"], name: "index_categories_on_name"
+    t.index ["parent_id"], name: "index_categories_on_parent_id"
   end
 
   create_table "vendors", force: :cascade do |t|
