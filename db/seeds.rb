@@ -1,6 +1,6 @@
 #Create default vendors
 Vendor.create!(name: "Starting balance")
-Vendor.create!(name: "Budget")
+vendorBudget = Vendor.create!(name: "Budget")
 Vendor.create!(name: "Manual Balance Adjustment")
 Vendor.create!(name: "Vendor needed")
 Vendor.create!(name: "Other")
@@ -70,4 +70,77 @@ Account.create!( name: "Retirement", starting_balance: 10000, starting_date: Dat
 Account.create!( name: "cash", starting_balance: 100, starting_date: Date.new(2023,7,1))
 Account.create!( name: "credit", starting_balance: 200, starting_date: Date.new(2023,1,2))
 Account.create!( name: "Venmo", starting_balance: 300, starting_date: Date.new(2023,1,3))
+bankBudget = Account.create!( name: "Budget", closed: true )
 
+
+budgetItems = [
+  { date: "2022-12-01",
+    lines: [ { amount: 6000,    category: 'Fuel' },
+             { amount: 12000,   category: 'Groceries' },
+             { amount: 12000,   category: 'Restaurants' },
+             { amount: 20000,   category: 'Entertainment' },
+             { amount: 5000,    category: 'Household & Cleaning' },
+             { amount: 20000,   category: 'MISC' },
+             { amount: 3500,    category: 'Phone'},
+             { amount: 125000,  category: 'Rent'},
+             { amount: 2300,    category: 'News Subscriptions'},
+             { amount: 5000,    category: 'Car Repairs & Maint'},
+             { amount: 1700,    category: 'Car Registration'},
+             { amount: 883,     category: 'Car Insurance'},
+             { amount: 50000,   category: 'Retirement-ROTH'},
+             { amount: 2040,    category: 'Medical/Dental'},
+             { amount: 80000,   category: 'Computer Stuff'}
+            ]},
+  { date: "2023-01-01",
+    lines: [ { amount: 14912,   category: 'Fuel' },
+             { amount: 21047,   category: 'Groceries' },
+             { amount: 17887,   category: 'Restaurants' },
+             { amount: 4017,    category: 'Entertainment' },
+             { amount: 2089,    category: 'Household & Cleaning' },
+             { amount: 12982,   category: 'MISC' },
+             { amount: 3500,    category: 'Phone'},
+             { amount: 125000,  category: 'Rent'},
+             { amount: 2300,    category: 'News Subscriptions'},
+             { amount: 1700,    category: 'Car Registration'},
+             { amount: 36944,   category: 'Car Insurance'},
+             { amount: 50000,   category: 'Retirement-ROTH'},
+             { amount: 2041,    category: 'Medical/Dental'},
+             { amount: 5000,    category: 'Car Repairs & Maint'},
+            ]},
+    { date: "2023-02-01",
+    lines: [ { amount: 6000,   category: 'Fuel' },
+             { amount: 12000,  category: 'Groceries' },
+             { amount: 12000,  category: 'Restaurants' },
+             { amount: 20000,  category: 'Entertainment' },
+             { amount: 5000,   category: 'Household & Cleaning' },
+             { amount: 793584, category: 'MISC' },
+             { amount: 3500,   category: 'Phone'},
+             { amount: 125000, category: 'Rent'},
+             { amount: 6000,   category: 'Internet & Utilities'},
+             { amount: 2300,   category: 'News Subscriptions'},
+             { amount: 1700,   category: 'Car Registration'},
+             { amount: 883,    category: 'Car Insurance'},
+             { amount: 50000,  category: 'Retirement-ROTH'},
+             { amount: 2040,   category: 'Medical/Dental'},
+             { amount: 5000,   category: 'Car Repairs & Maint'},
+            ]}
+]
+
+budgetItems.each_with_index do |i,index|
+  t = Trx.new(
+    date: i[:date],
+    memo: "Budget",
+    category: Category.find_by(name: "Split"),
+    vendor: vendorBudget,
+    account: bankBudget
+  )
+
+  i[:lines].each_with_index do |l|
+    t.lines.build(
+      line_type: "Budget",
+      amount: l[:amount],
+      category: Category.find_by(name: l[:category])
+    )
+  end
+  t.save!
+end

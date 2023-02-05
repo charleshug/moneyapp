@@ -11,7 +11,7 @@ class Trx < ApplicationRecord
 
   before_save :update_trx_amount_from_lines, if: :is_split_trx
   after_save :update_account_balance
-
+  after_save :update_ledger, unless: :is_split_trx
   after_destroy :remove_from_account_balance
   before_destroy :zero_amount
 
@@ -155,6 +155,12 @@ class Trx < ApplicationRecord
     else
       "Expense"
     end
+  end
+
+  def update_ledger
+    delta_amount =  amount - (amount_before_last_save || 0 )
+    is_budget? ? area_string = "budget" : area_string = "actual"
+    Ledger.update_ledger(date, category, delta_amount, area_string)
   end
 
 

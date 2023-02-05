@@ -9,6 +9,7 @@ class Line < ApplicationRecord
   before_save :set_line_type
   after_save :update_trx_amount
   after_save :update_trx_category
+  after_save :update_ledger
 
   before_destroy :zero_amount
 
@@ -36,6 +37,11 @@ class Line < ApplicationRecord
     line_type == "Budget"
   end
 
+  def update_ledger
+    delta_amount =  amount - (amount_before_last_save || 0 )
+    is_budget? ? area_string = "budget" : area_string = "actual"
+    Ledger.update_ledger(trx.date, category, delta_amount, area_string)
+  end
 
   def zero_amount
     update_attribute(:amount, 0)
