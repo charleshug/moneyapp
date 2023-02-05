@@ -1,0 +1,149 @@
+<%= form_with(model: trx, id: 'trx-form', html: {class: 'space-y-6' }, data: { slideover_target: 'form'}) do |f| %>
+  <div id="attributes_container" class="px-2 grid items-center">
+    <div class="font-bold border-b-2">
+      <%= trx.persisted? ? "Edit " : "New " %>Transaction
+    </div>
+    <%#= f.label :amount %>
+    <%#= f.number_field :amount, :value =>(f.object.amount || "" ) %>
+
+    <div id="amount_container"
+      data-controller="toggle toggle-type trx-form" 
+      data-toggle-change-class='hidden'>
+      <div id="amount_box" class="py-6 px-2 bg-black flex justify-end items-center"
+            data-action="click->toggle#toggle">
+        <div id="displayAmount" 
+             data-trx-form-target="displayAmount"
+             data-toggle-type-target="displayAmount"
+             class="text-green-500 text-5xl select-none">$0.00</div>
+        <%= f.hidden_field :amount,
+            data: {trx_form_target: "formAmount"},
+            class: "bg-inherit text-white border-0 decoration-none text-green-500 text-5xl" %>
+      </div>
+      <div id="income_expense_box" class="flex justify-between" >
+        <div class="p-2 flex-1 text-2xl text-center text-black bg-white select-none"
+          data-toggle-type-target="expenseBox"
+          data-toggle-type-change-class='bg-red-500'
+          data-action="click->toggle-type#toggleExpense" >EXPENSE</div>
+          <%# class="p-2 flex-1 text-2xl text-center text-red-500 bg-white">EXPENSE</div> %>
+        <div class="p-2 flex-1 text-2xl text-center text-white bg-green-500 select-none"
+          data-toggle-type-target="incomeBox"
+          data-toggle-type-change-class='bg-green-500' 
+          data-action="click->toggle-type#toggleIncome" >INCOME</div>
+      </div>
+      <div id="numpad" class="my-1 bg-white grid grid-cols-3 gap-0.5 <%= "hidden" if trx.amount != 0 %>" 
+            data-toggle-target="numpad">
+        <div id="1" data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">1</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">2</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">3</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">4</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">5</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">6</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">7</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">8</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">9</div>
+        <div id="back" data-action="click->trx-form#handleNumber"
+               class="py-4 text-3xl bg-slate-300 text-center font-bold  select-none">Back</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">0</div>
+        <div class="py-4 text-3xl bg-[#2eafcf] text-white text-center select-none" data-action="click->toggle#toggle">Next</div>
+      </div>
+    </div>
+
+
+    <%= f.label :vendor, class: "" %>
+    <%= f.collection_select(:vendor_id, 
+                                Vendor.all,
+                                :id,
+                                :name,
+                                {},
+                                class:""
+                                ) %>
+    
+    <%= f.label :account, "Account", class: "" %>
+    <%= f.select :account_id, grouped_options_for_select(Account.order('LOWER(name)').for_select, f.object.account_id), {}, {class:""} %>
+  
+    <%= f.label :date, class: "" %>
+    <%= f.date_field :date, :value => ( f.object.date || Date.today ), class:"" %>
+
+    <%= f.label :category, class: "" %>
+    <%= f.grouped_collection_select(:category_id, 
+                                            Category.top_level.includes(:subcategories), 
+                                            :subcategories, 
+                                            :name, 
+                                            :id, 
+                                            :name,
+                                            { prompt: 'Category'}, 
+                                            class:""
+                                            ) %>
+    <% unless f.object.lines.empty? %>
+      <div id="line_items" class="border-2">
+        <div>Lines</div>
+        <div id="line_items_details" class="">
+          <%= f.fields_for :lines do |ff| %>
+            <div id="single_line" class="w-full flex justify-between gap-2 items-center">
+              <%= ff.grouped_collection_select(:category_id, 
+                                                    Category.top_level.includes(:subcategories), 
+                                                    :subcategories, 
+                                                    :name, 
+                                                    :id, 
+                                                    :name,
+                                                    { prompt: 'Category'}, 
+                                                    class:"p-0 w-[200px] sm:w-base grow shrink "
+                                                    ) %>
+              <div class="flex gap-2 items-center">
+                <%= ff.number_field :amount, class:"p-0 w-[100px]" %>
+                <%= ff.check_box :_destroy, :class=> "border-red-700 text-red-700 focus:ring-red-700" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <%= f.submit "Add Line", formmethod: :post, formaction: new_build_trx_path(id: f.object), 
+          class: "mt-2 px-2 border hover:cursor-pointer rounded-md bg-green-500 text-white font-bold" %>
+      </div>
+    <% else%>      
+      <%= f.submit "Split Category", formmethod: :post, formaction: new_build_trx_path(id: f.object), 
+        class: "mt-2 px-2 border hover:cursor-pointer rounded-md bg-green-500 text-white font-bold" %>
+    <% end %>
+  </div>
+
+  <div id="optional_container" class="my-2 divide-y">
+    <div class="px-3 ">Optional</div>
+    
+    <%= f.text_field :memo, placeholder:"Enter a memo...", class:"w-full border-0" %>
+    <div class="flex justify-between items-center p-3">
+      <div>Cleared</div>
+      <input type="checkbox", class="w-8 h-8">
+    </div>
+    <div class="p-3 flex items-center">
+      <div class="pr-3">Flag</div>
+      <div class="flex grow justify-between items-center">
+        <%= f.radio_button :flag, 'nil',    class:"w-8 h-8 border border-4 border-slate-500 bg-slate-500 checked:bg-slate-500 focus:ring-slate-500 focus:text-slate-500" %>
+        <%= f.radio_button :flag, 'red',    class:"w-8 h-8 border border-4 border-red-500 bg-red-500 checked:bg-red-500 focus:ring-red-500 focus:text-red-500" %>
+        <%= f.radio_button :flag, 'orange', class:"w-8 h-8 border border-4 border-orange-500 bg-orange-500 checked:bg-orange-500 focus:ring-orange-500 focus:text-orange-500" %>
+        <%= f.radio_button :flag, 'yellow', class:"w-8 h-8 border border-4 border-yellow-500 bg-yellow-500 checked:bg-yellow-500 focus:ring-yellow-500 focus:text-yellow-500" %>
+        <%= f.radio_button :flag, 'green',  class:"w-8 h-8 border border-4 border-green-500 bg-green-500 checked:bg-green-500 focus:ring-green-500 focus:text-green-500" %>
+        <%= f.radio_button :flag, 'blue',   class:"w-8 h-8 border border-4 border-blue-500 bg-blue-500 checked:bg-blue-500 focus:ring-blue-500 focus:text-blue-500" %>
+        <%= f.radio_button :flag, 'purple', class:"w-8 h-8 border border-4 border-purple-500 bg-purple-500 checked:bg-purple-500 focus:ring-purple-500 focus:text-purple-500" %>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-between gap-2">
+    <%= f.submit id: "submit_button", class: "p-2 grow rounded font-bold text-white bg-sky-500 hover:cursor-pointer" %>
+    <% if f.object.persisted? %>
+      <!-- NOTE: record is deleted but slideover doesn't close, ?update stimulus handleResponse?-->
+      <%= link_to 'Delete', trx_path(trx), class: "p-2 rounded font-bold text-white bg-red-700", 
+        data: {turbo_method: :delete, turbo_confirm: "Are you sure?" }
+      %>
+    <% end %>
+  </div>
+  
+<% end %>

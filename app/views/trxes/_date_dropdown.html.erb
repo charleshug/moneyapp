@@ -1,0 +1,75 @@
+<!-- Drop down top container -->
+<div class="flex justify-end">
+  <div class="" data-controller="dropdown">
+    <div class="select-none"
+         data-action="click->dropdown#toggle click@window->dropdown#hide"
+         data-dropdown-target="button"
+         role="button" 
+         tabindex="0" >
+      <span class="appearance-none flex items-center inline-block">
+        Date
+      </span>
+    </div>
+    <!-- BEGIN Menu section -->
+    <div data-dropdown-target="menu" class="absolute left-2 mt-2 hidden z-10">
+      <div class="shadow shadow-black rounded border ">
+        <div class="p-2 bg-[#f5f5f5] font-bold text-lg text-slate-500">Timeframe</div>
+        <div class="">
+          <div id='form-choices' class="p-px tracking-tighter flex justify-between gap-2 bg-white border-y-2 border-slate-400 max-w-[360px] sm:max-w-none overflow-x-auto">
+            <%=  link_to 'This Month', trxes_path(:period => Date.today.beginning_of_month),
+                  class:"px-2 font-bold text-sky-500 hover:text-white hover:bg-blue-500 hover:cursor-pointer rounded-lg" %>
+            <%=  link_to 'Latest 3 Months', trxes_path(:period_start => (Date.today.beginning_of_month << 2).strftime("%Y-%m"),:period_end => Date.today.beginning_of_month.strftime("%Y-%m")),
+                  class:"px-2 font-bold text-sky-500 hover:text-white hover:bg-blue-500 hover:cursor-pointer rounded-lg" %>
+            <%=  link_to 'This Year', trxes_path(:period_start => Date.today.beginning_of_year.strftime("%Y-%m"),:period_end => Date.today.end_of_year.strftime("%Y-%m")),
+                  class:"px-2 font-bold text-sky-500 hover:text-white hover:bg-blue-500 hover:cursor-pointer rounded-lg" %>
+            <span class="text-slate-400 font-bold">Last Year</span>
+            <%#=  link_to 'Last Year', trxes_path(:period_start => Date.today.prev_year.beginning_of_year.strftime("%Y-%m"),:period_end => Date.today.prev_year.end_of_year.strftime("%Y-%m")),
+                  class:"px-2 font-bold text-sky-500 hover:text-white hover:bg-blue-500 hover:cursor-pointer rounded-lg" %>
+            <%=  link_to 'All Dates', trxes_path,
+                  class:"px-2 font-bold text-white bg-blue-300 hover:bg-blue-500 hover:cursor-pointer rounded-lg" %>
+          </div>
+          <div id="date-form" class="flex justify-between gap-2">
+            <%= form_with url:'#', method: :get, id:'date-form', class:'grow' do |form| %>
+              <div class="px-2 py-4 bg-[#f5f5f5] flex flex-col sm:flex-row sm:justify-center gap-2">
+                <div class="p-2 flex items-center">
+                  <div class="font-bold">From:</div>
+                  <input type="month" id="period_start" name="period_start"
+                    min="2019-01"
+                    max="2023-12" 
+                    value="<%= Date.today.strftime('%Y-%m')%>"
+                    class="rounded-md font-bold bg-gradient-to-t from-[#cacaca] to-white]"
+                    pattern="[0-9]{4}-[0-9]{2}"
+                  />
+                </div>
+                <div class="p-2 flex items-center">
+                  <div class="font-bold">Through:</div>
+                  <input type="month" id="period_end" name="period_end"
+                    min="2019-01"
+                    max="2023-12" 
+                    value="<%= Date.today.strftime('%Y-%m')%>"
+                    class="rounded-md font-bold bg-gradient-to-t from-[#cacaca] to-white]"
+                    pattern="[0-9]{4}-[0-9]{2}"
+                  />
+                </div>
+              </div>
+              <div class="p-2 border-t-2 border-slate-400 bg-[#e7e7e7] flex justify-start gap-4">
+                <%= button_tag :type => 'button', class: "p-2 rounded-md border border-black font-bold bg-gradient-to-t hover:bg-gradient-to-b from-[#cacaca] to-white]" do %>
+                  <svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" class="inline rounded-full bg-white fill-red-500">
+                    <path d="M8 0c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zM12.2 10.8l-1.4 1.4-2.8-2.8-2.8 2.8-1.4-1.4 2.8-2.8-2.8-2.8 1.4-1.4 2.8 2.8 2.8-2.8 1.4 1.4-2.8 2.8 2.8 2.8z"></path>
+                  </svg>
+                  <span>Cancel</span>
+                <% end %>
+                <%= form.button class: "p-2 rounded-md border border-black font-bold bg-gradient-to-t hover:bg-gradient-to-b from-[#bee877] to-slate-200" do %>
+                  <svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" class="inline rounded-full bg-white fill-[#5c9e11]">
+                    <path d="M8 0c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zM7.1 11.7l-4.2-4.1 1.4-1.4 2.7 2.7 5-4.9 1.4 1.4-6.3 6.3z"></path>
+                  </svg>
+                  <span class="text-black">Done</span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

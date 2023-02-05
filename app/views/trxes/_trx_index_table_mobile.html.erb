@@ -1,0 +1,71 @@
+<!-- trx index top -->
+<div id="trxes_top_bar" class="whitespace-nowrap border-b-[1px] border-gray-500 bg-[#15323c]">
+  <!-- Accounts top bar, back arrow, name, edit button-->
+  <div class="px-2 pt-2 flex items-center justify-between bg-[#15323c]">
+    <%= link_to accounts_path, class:"grow basis-0 " do %>
+      <div class="text-sky-500 font-bold">< Accounts</div>
+    <% end %>
+
+    <% if session[:account_id] && account = Account.find(session[:account_id]) %>
+      <div id="account-title" class="text-white font-bold">
+        <% if !account.is_a? Array %>
+          <%= account.name %>
+        <% else %>
+            <%= account.pluck(:name).join(", ") %>
+        <% end %>
+      </div>
+      <%= render 'edit_dropdown', account:account %>
+      </div>
+    <% else %>
+      <div id="account-title" class="text-white font-bold">All Accounts</div>
+        <div class="grow basis-0"></div>
+      </div>
+    <% end %>
+
+  <!-- Account summary section: working balance, Cleared / Uncleared -->
+  <div id="account-summary-box" class="px-2 flex">
+    <div class="grow bg-[#15323c] divide-y">
+      <div class="text-white">Working Balance</div>
+      <% @account ? temp = @account.balance : temp = @trxes.sum(:amount) %>
+      <!-- 
+      <div class="font-bold text-green-500"><%#= presentableNum(@account.balance) %></div>
+      -->
+      <div class="font-bold <%= temp <0 ? "text-red-500" : "text-green-500" %>"><%= presentableNum(temp) %></div>
+    </div>
+    <div class=" grow bg-[#15323c] divide-y">
+      <div id="cleared" class="flex justify-between">
+        <div class="text-sky-600">Cleared</div>
+        <div class="font-bold text-green-500">$0.00</div>
+      </div>
+      <div id="uncleared" class="flex justify-between">
+        <div class="text-sky-600">Uncleared</div>
+        <div class="font-bold text-white">$0.00</div>
+      </div>
+    </div>
+  </div>
+  <!-- Transaction selected box -->
+  <div id="trx-selected-box">
+    <div class="p-2 grow bg-[#15323c] text-white flex justify-between">
+      <div id="trx-selected-text"></div>
+      <div id="trx-selected-amount"></div>
+    </div>
+  </div>
+  <!-- Transaction searchbar -->
+  <%#= render 'search_bar' %>
+
+  <!-- Transaction sort & filter-->
+  <%= render 'sort_bar' %>
+</div>
+
+<!-- trx index details -->
+<div class="overflow-y-auto bg-white">
+  <div id="trx_details" class="w-full">
+    <% if trxes.empty?%>
+    <p class="p-2 text-center">No transactions found</p>
+    <% else %>
+      <% trxes.each do |trx| %>
+        <%= render 'trx', trx: trx  %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

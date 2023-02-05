@@ -1,0 +1,93 @@
+<%= form_with(model: trx) do |f| %>
+  <% if trx.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(trx.errors.count, "error") %> prohibited this trx from being saved:</h2>
+
+      <ul>
+        <% trx.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="main">
+
+    <div>      
+      <div>
+        <div>
+          <%= f.date_field :date, :value => ( f.object.date || Date.today ), class:"p-0" %>
+        </div>
+        <div>
+          <%= f.collection_select(:vendor_id, 
+                                  Vendor.all,
+                                  :id,
+                                  :name,
+                                  {prompt: 'Select Vendor', include_blank: true,},
+                                  class:"p-0 pr-6"
+                                  ) %>
+        </div>
+      <div>
+        <%= f.select :account_id, grouped_options_for_select(Account.for_select, 
+                                                             f.object.account_id),
+                                                             {prompt: 'Select Account'},
+                                                             {class:'p-0 pr-6'} %>
+      </div>
+      <div>        
+          <%= f.grouped_collection_select(:category_id, 
+                                          Category.top_level.includes(:subcategories), :subcategories, :name, 
+                                          :id, :name,
+                                          { prompt: 'Select category', include_blank: true},
+                                          class:"p-0 pr-6"
+                                          ) %>
+        
+      </div>
+      <div>
+        <%= f.number_field :amount, class: "w-20 p-0" %>
+      </div>
+
+      <div>
+        <%= f.text_field :memo, placeholder: "Enter a memo...", class:"p-0" %>
+      </div>
+
+    </div>
+    <% if trx.lines %>
+      <hr>
+      <%= f.fields_for :lines do |ff| %>
+        <div class='mt-2'>
+          <div>
+            <%= ff.grouped_collection_select(:category_id, 
+                                              Category.top_level.includes(:subcategories), 
+                                              :subcategories, 
+                                              :name, 
+                                              :id, 
+                                              :name,
+                                              { prompt: 'Select category', include_blank: true},
+                                              class:"p-0 pr-6"
+                                              ) %>
+          </div>
+          <div class="flex justify-end">
+            <div>
+              <%= ff.number_field :amount, class: 'p-0 w-32' %>
+            </div>
+          
+            <div>
+              <%= ff.label :_destroy, class: "text-red-700" %>
+              <%= ff.check_box :_destroy, :class=> "border-red-700 text-red-700 focus:ring-red-700" %>
+            </div>
+          </div>
+        
+        </div>
+
+      <% end %>
+    <% end %>
+  </div>
+
+  <br>
+
+  <div><%= f.submit class: "border text-green-700 hover:cursor-pointer" %></div>
+  <div>
+    <%= f.submit "Add line item", formmethod: :post, formaction: new_build_trx_path(id: f.object), class: "border hover:cursor-pointer" %>
+  </div>
+
+<% end %>

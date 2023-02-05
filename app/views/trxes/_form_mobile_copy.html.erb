@@ -1,0 +1,108 @@
+<%= form_with(model: trx) do |f| %>
+  <div id = "new_trx" class="my-1" data-controller="trx-form">
+    <div id="amount_container"
+      data-controller="toggle toggle-type" 
+      data-toggle-change-class='hidden'>
+      <div id="amount_box" class="py-6 px-2 bg-black flex justify-end items-center"
+            data-action="click->toggle#toggle">
+        <div id="displayAmount" 
+             data-trx-form-target="displayAmount"
+             data-toggle-type-target="displayAmount"
+             class="text-green-500 text-5xl select-none">$0.00</div>
+        <%= f.hidden_field :amount,
+            data: {trx_form_target: "formAmount"},
+            class: "bg-inherit text-white border-0 decoration-none text-green-500 text-5xl" %>
+      </div>
+      <div id="income_expense_box" class="flex justify-between" >
+        <div class="p-2 flex-1 text-2xl text-center text-black bg-white select-none"
+          data-toggle-type-target="expenseBox"
+          data-toggle-type-change-class='bg-red-500'
+          data-action="click->toggle-type#toggleExpense" >EXPENSE</div>
+          <%# class="p-2 flex-1 text-2xl text-center text-red-500 bg-white">EXPENSE</div> %>
+        <div class="p-2 flex-1 text-2xl text-center text-white bg-green-500 select-none"
+          data-toggle-type-target="incomeBox"
+          data-toggle-type-change-class='bg-green-500' 
+          data-action="click->toggle-type#toggleIncome" >INCOME</div>
+      </div>
+      <div id="numpad" class="my-1 bg-white grid grid-cols-3 gap-0.5" 
+            data-toggle-target="numpad">
+        <div id="1" data-action="click->trx-form#handleNumber"
+             class="py-4 text-3xl bg-slate-300 text-center select-none">1</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">2</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">3</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">4</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">5</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">6</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">7</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">8</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">9</div>
+        <div id="back" data-action="click->trx-form#handleNumber"
+               class="py-4 text-3xl bg-slate-300 text-center font-bold  select-none">Back</div>
+        <div data-action="click->trx-form#handleNumber"
+              class="py-4 text-3xl bg-slate-300 text-center select-none">0</div>
+        <div class="py-4 text-3xl bg-[#2eafcf] text-white text-center select-none" data-action="click->toggle#toggle">Next</div>
+      </div>
+    </div>
+
+  <div id="attributes_container" class=" grid grid-cols-2 divide-y items-center">
+    <%= f.label :vendor, class: "p-2" %>
+    <%#= f.select :vendor_id, grouped_options_for_select(Vendor.all, f.object.vendor_id, prompt: 'Vendor'), {}, {class:"bg-[#bababa]"} %>
+    <%= f.collection_select(:vendor_id, 
+                                Vendor.all,
+                                :id,
+                                :name,
+                                {},
+                                class:""
+                                ) %>
+  
+    <%= f.label :category, class: "p-2" %>
+    <%= f.grouped_collection_select(:category_id, 
+                                            Category.top_level.includes(:subcategories), 
+                                            :subcategories, 
+                                            :name, 
+                                            :id, 
+                                            :name,
+                                            { prompt: 'Category'}, 
+                                            class:""
+                                            ) %>
+  
+    <%= f.label :account, "Account", class: "p-2" %>
+    <%= f.select :account_id, grouped_options_for_select(Account.for_select, f.object.account_id), {}, {class:""} %>
+  
+    <%= f.label :date, class: "p-2" %>
+    <%= f.date_field :date, :value => ( f.object.date || Date.today ), class:"" %>
+  </div>
+
+  <div id="optional_container" class="my-2 divide-y">
+    <div class="px-3 ">Optional</div>
+    
+    <%= f.text_field :memo, placeholder:"Enter a memo...", class:"w-full border-0" %>
+    <div class="flex justify-between items-center p-3">
+      <div>Cleared</div>
+      <input type="checkbox", class="w-8 h-8">
+    </div>
+    <div class="p-3 flex items-center">
+      <div class="pr-3">Flag</div>
+      <div class="flex grow justify-between items-center">
+        <%= f.radio_button :flag, 'nil',    class:"w-8 h-8 border border-4 border-slate-500 bg-slate-500 checked:bg-slate-500 focus:ring-slate-500 focus:text-slate-500" %>
+        <%= f.radio_button :flag, 'red',    class:"w-8 h-8 border border-4 border-red-500 bg-red-500 checked:bg-red-500 focus:ring-red-500 focus:text-red-500" %>
+        <%= f.radio_button :flag, 'orange', class:"w-8 h-8 border border-4 border-orange-500 bg-orange-500 checked:bg-orange-500 focus:ring-orange-500 focus:text-orange-500" %>
+        <%= f.radio_button :flag, 'yellow', class:"w-8 h-8 border border-4 border-yellow-500 bg-yellow-500 checked:bg-yellow-500 focus:ring-yellow-500 focus:text-yellow-500" %>
+        <%= f.radio_button :flag, 'green',  class:"w-8 h-8 border border-4 border-green-500 bg-green-500 checked:bg-green-500 focus:ring-green-500 focus:text-green-500" %>
+        <%= f.radio_button :flag, 'blue',   class:"w-8 h-8 border border-4 border-blue-500 bg-blue-500 checked:bg-blue-500 focus:ring-blue-500 focus:text-blue-500" %>
+        <%= f.radio_button :flag, 'purple', class:"w-8 h-8 border border-4 border-purple-500 bg-purple-500 checked:bg-purple-500 focus:ring-purple-500 focus:text-purple-500" %>
+      </div>
+    </div>
+  </div>
+
+  <%= f.submit "Save Transaction", id: "submit_button", class: "my-1 p-2 w-full rounded text-white bg-[#2eafcf] hover:cursor-pointer" %>
+  
+  <% end %>

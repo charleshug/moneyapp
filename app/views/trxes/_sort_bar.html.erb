@@ -1,0 +1,11 @@
+<div class="px-2 py-1 bg-white flex justify-between items-center gap-1 relative">
+  <div class="p-1 rounded-lg <%= "bg-gray-300" if session[:account_id] %> ">
+    <%#= sort_link(column: "accounts.name", label: "Account") %>
+    <%= render 'account_dropdown' %>
+  </div>
+  <%= render 'date_dropdown' %>
+  <%#= sort_link(column: "date", label: "Date") %>
+  <%= sort_link(column: "vendors.name", label: "Vendor") %>
+  <%= sort_link(column: "categories.name", label: "Category") %>
+  <%= sort_link(column: "amount", label: "Amount") %>
+</div>

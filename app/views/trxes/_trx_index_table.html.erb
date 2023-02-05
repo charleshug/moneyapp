@@ -1,0 +1,140 @@
+<!-- trx index top -->
+<div id="trxes_top_bar" class="whitespace-nowrap p-2 flex justify-between">
+  <div>
+    <button class="border border-gray-400 rounded hover:bg-[#f8f8f8] p-1">Edit Trx</button>
+    <button class="border border-gray-400 rounded hover:bg-[#f8f8f8] p-1">Import</button>
+  </div>
+  <div>
+    <button class="border border-gray-400 rounded hover:bg-[#f8f8f8] p-1">All Dates</button>
+    <input type="text" placeholder="Search All Accounts" class="p-1 rounded hover:bg-[#f8f8f8] focus:w-[33vw]">
+  </div>
+</div>
+
+<!-- trx index details -->
+<div class="h-screen overflow-auto">
+  <div id="trx_details" class="table w-full">
+    <div class="table-header-group">
+      <div class="table-row sticky top-0 bg-[#5a676d] text-white font-bold text-center">
+        <div class="table-cell whitespace-nowrap p-1 hover:bg-[#69747a]">
+          <%= sort_link(column: "id", label: "Trx #") %>
+        </div>
+        <div class="table-cell whitespace-nowrap p-1 hover:bg-[#69747a]">
+          <%= sort_link(column: "accounts.name", label: "Account") %>
+        </div>
+        <div class="table-cell whitespace-nowrap p-1 hover:bg-[#69747a]">
+          <%= sort_link(column: "date", label: "Date") %>
+        </div>
+        <div class="table-cell whitespace-nowrap p-1 hover:bg-[#69747a]">
+          <%= sort_link(column: "vendors.name", label: "Vendor") %>
+        </div>
+        <div class="table-cell whitespace-nowrap p-1 hover:bg-[#69747a]">
+          <%= sort_link(column: "categories.name", label: "Category") %>
+        </div>
+        <div class="table-cell whitespace-nowrap p-1 hover:bg-[#69747a]">
+          <%= sort_link(column: "memo", label: "Memo") %>
+        </div>
+        <div class="table-cell whitespace-nowrap p-1 hover:bg-[#69747a]">
+          <%= sort_link(column: "amount", label: "Amount") %>
+        </div>
+      </div>
+    </div>
+    <div class="table-row-group">
+      <% trxes.each do |trx| %>
+        <div id="<%=dom_id trx %>" class="table-row odd:bg-white even:bg-[#edf6fb] hover:bg-slate-200">
+          <%= link_to trx.id, trx_path(trx), class: "table-cell border rounded text-center" %>
+          <div class="table-cell pl-2 whitespace-nowrap">
+            <%= link_to trx.account&.name, trxes_path(account_id: trx.account), class: "hover:font-bold" %>
+          </div>
+          <div class="table-cell pl-2"><%= trx.date.strftime("%m/%d/%y") %></div>
+          <div class="table-cell pl-2 whitespace-nowrap">
+            <%= link_to trx.vendor&.name, trxes_path(vendor_id: trx.vendor), class: "hover:font-bold" %>
+          </div>
+          <div class="table-cell pl-2 whitespace-nowrap">
+            <%= link_to trx.category&.parent&.name, trxes_path(parent_id: trx.category.parent), class: "hover:font-bold" %> :
+            <%= link_to trx.category&.name, trxes_path(category_id: trx.category), class: "hover:font-bold" %>
+          </div>
+          <div class="table-cell pl-2 whitespace-nowrap"><%= trx.memo %></div>
+          <div class="table-cell pr-2 text-right"><%= presentableNum(trx.amount) %></div>
+        </div>
+        <% if trx.lines.size > 1 %>
+          <% trx.lines.each do |line| %>
+            <div id="<%=dom_id line %>" class="table-row hover:bg-slate-200">
+              <div class="table-cell whitespace-nowrap text-center">
+                Line <%= line.id %>
+              </div>
+              <div class="table-cell pl-2 whitespace-nowrap"></div>
+              <div class="table-cell pl-2 whitespace-nowrap"></div>
+              <div class="table-cell pl-2 whitespace-nowrap"></div>
+              <div class="table-cell pl-2 whitespace-nowrap">
+                <%= link_to line.category&.parent&.name, trxes_path(parent_id: line.category.parent), class: "hover:font-bold" %> :
+                <%= link_to line.category&.name, trxes_path(category_id: line.category), class: "hover:font-bold" %>
+              </div>
+              <div class="table-cell pl-2 whitespace-nowrap">
+                <%= line.memo %>
+              </div>
+              <div class="table-cell pl-2 whitespace-nowrap">
+                <%= presentableNum(line.amount) %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- trx index bottom -->
+<div id="trx_bottom_bar" class="">
+  <div class="flex gap-2 border border-gray-400">
+    <%= link_to new_trx_path do %>
+      <div class="p-1 rounded-md bg-[#8bb158] text-white font-bold drop-shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block" viewBox="0 0 16 16" fill="currentColor" title="add_trx">
+          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+        </svg>
+        <span class="drop-shadow">
+          Add New Transaction
+        </span>
+      </div>
+    <% end %>
+
+    <%= link_to new_trx_path do %>
+      <div class="p-1 rounded-md bg-[#8bb158] text-white font-bold drop-shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block" viewBox="0 0 16 16" fill="currentColor" title="add_trx">
+          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+        </svg>
+        <span class="drop-shadow">
+          Make a transfer
+        </span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="border rounded flex justify-between p-2">
+    <div class="border border-gray-400 rounded hover:bg-[#f8f8f8] p-2 font-bold text-center">
+      <div>Scheduled</div>
+      <div>Transactions</div>
+    </div>
+    <div class="flex gap-2">
+      <div class="border border-gray-400 rounded p-2 flex gap-2 bg-white">
+        <div>
+          <div class="text-center text-xs">Cleared Balance</div>
+          <div class="text-center font-bold"><%= presentableNum(trxes.sum(:amount)) %></div>
+        </div>
+        <div class="font-bold">+</div>
+        <div>
+          <div class="text-center text-xs">Uncleared Transactions</div>
+          <div class="text-center font-bold"><%= presentableNum(trxes.sum(:amount)) %></div>
+        </div>
+        <div class="font-bold">=</div>
+        <div>
+          <div class="text-center text-xs">Working Balance</div>
+          <div class="text-center font-bold"><%= presentableNum(trxes.sum(:amount)) %></div>
+        </div>
+      </div>
+        <div class="border border-gray-400 rounded hover:bg-[#f8f8f8] p-2 font-bold text-center">
+          <div>Reconcile</div>
+          <div>Account</div>
+        </div>
+    </div>
+  </div>
+</div>

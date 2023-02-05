@@ -8,4 +8,13 @@ module ApplicationHelper
       page_title + " | " + base_title
     end
   end
+
+  def presentableNum(amount)
+    number_to_currency(amount/100.00, unit:"", delimiter: ",")
+  end  
+  
+  def presentableNumDollar(amount)
+    number_to_currency(amount/100.00, delimiter: ",")
+  end 
+  
 end
