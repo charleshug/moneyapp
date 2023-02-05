@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_05_183134) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_05_203905) do
   create_table "accounts", force: :cascade do |t|
     t.string "name", null: false
     t.integer "balance", default: 0, null: false
@@ -29,6 +29,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_05_183134) do
     t.index ["hidden"], name: "index_categories_on_hidden"
     t.index ["name"], name: "index_categories_on_name"
     t.index ["parent_id"], name: "index_categories_on_parent_id"
+  end
+
+  create_table "ledgers", force: :cascade do |t|
+    t.date "date", null: false
+    t.boolean "carry_forward_negative_balance", default: false
+    t.integer "beginning_balance", default: 0
+    t.integer "budget", default: 0
+    t.integer "actual", default: 0
+    t.integer "net", default: 0
+    t.integer "end_balance", default: 0
+    t.integer "carried_balance", default: 0
+    t.integer "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_ledgers_on_category_id"
+    t.index ["date", "category_id"], name: "index_ledgers_on_date_and_category_id", unique: true
+    t.index ["date"], name: "index_ledgers_on_date"
   end
 
   create_table "lines", force: :cascade do |t|
@@ -66,6 +83,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_05_183134) do
     t.index ["name"], name: "index_vendors_on_name"
   end
 
+  add_foreign_key "ledgers", "categories"
   add_foreign_key "lines", "categories"
   add_foreign_key "lines", "trxes"
   add_foreign_key "trxes", "accounts"

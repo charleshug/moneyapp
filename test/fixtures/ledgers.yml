@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2023-02-05
+  carry_forward_negative_balance: false
+  beginning_balance: 1
+  budget: 1
+  actual: 1
+  net: 1
+  end_balance: 1
+  carried_balance: 1
+  category: one
+
+two:
+  date: 2023-02-05
+  carry_forward_negative_balance: false
+  beginning_balance: 1
+  budget: 1
+  actual: 1
+  net: 1
+  end_balance: 1
+  carried_balance: 1
+  category: two
