@@ -1,0 +1,20 @@
+<div data-controller="sidebar" class="m-2 rounded-md bg-[#196f9b] text-white drop-shadow">
+  <div data-action="click->sidebar#toggle_budgetList">
+    <div class="px-2 pt-2 flex justify-between">
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" data-sidebar-target="budgetListArrow" class="h-5 w-5 inline-block" viewBox="0 0 16 16" fill="currentColor" title="account_arrow">
+          <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+        </svg>
+        <span class="italic"><%= accounts_name %></span>
+      </div>
+        <span class="italic <%= "text-[#eda8aa]" if accounts.sum(:balance) < 0 %>">
+          <%= presentableNum(accounts.sum(:balance)) %>
+        </span>
+    </div>
+  </div>
+  <div data-sidebar-target="budgetList" class="accounts-box-content <%= "hidden" if accounts_name == "Closed" %>">
+    <ul class="list-none font-normal">
+      <%= render accounts %>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+<div id="all_accounts_detail" class="shrink grow min-h-0 flex flex-col bg-white">
+  <!-- Accounts header box-->
+  <div id="accounts-header" class="px-4 py-2 flex justify-between bg-[#15323c]">
+    <div class="grow basis-0"></div>
+    <div class="text-white font-bold">Accounts</div>
+    <div class="grow basis-0 flex justify-end text-sky-500 font-bold">
+      <%= render 'edit_dropdown', account: Account.first %>
+    </div>
+  </div>
+  <!-- Accounts details box -->
+  <div id="accounts-details" class="grow min-h-0 overflow-auto bg-slate-300">
+
+    <%= link_to trxes_path, id:"accounts_header", class:"px-4 py-2 mb-3 flex justify-between bg-white font-bold" do %>
+      <div class="whitespace-nowrap overflow-hidden text-ellipsis">All Accounts</div>
+      <div>
+        <span class="<%= @accounts.sum(:balance) < 0 ? "text-red-500" : "text-green-600"%>"><%= presentableNumDollar(@accounts.sum(:balance)) %></span>
+        <span>></span>
+      </div>
+    <% end %>
+
+    <div id="accounts_rows" class="overflow-y-auto">
+      <div id="accounts_on" class="mb-3 bg-white divide-y">
+        <div class="px-4 flex justify-between bg-white sticky top-0 font-bold">
+          <div class="whitespace-nowrap overflow-hidden">Budget</div>
+          <div>
+            <%= presentableNum(@accounts_onBudget.sum(:balance)) %>
+          </div>
+        </div>
+
+          <% @accounts_onBudget.each do |b| %>
+            <%= link_to trxes_path(account_id: b.id), class:"px-4 py-2 bg-white hover:bg-slate-200 flex justify-between" do %>
+              <div class="whitespace-nowrap overflow-hidden text-ellipsis" >
+                <%= b.name %>
+              </div>
+              <div>
+                <span class="font-bold <%= b.balance < 0 ? "text-red-600" : "text-green-600" %>" ><%= presentableNum(b.balance) %></span>
+                <span>></span>
+              </div>
+            <% end %>
+          <% end %>
+      </div>
+
+      <div id="accounts_off" class="mb-3 bg-white divide-y">
+        <div class="px-4 flex justify-between bg-white sticky top-0 font-bold">
+          <div class="whitespace-nowrap overflow-hidden">Off-Budget</div>
+          <div>
+            <%= presentableNum(@accounts_offBudget.sum(:balance)) %>
+          </div>
+        </div>
+
+          <% @accounts_offBudget.each do |b| %>
+            <%= link_to trxes_path(account_id: b.id), class:"px-4 py-2 bg-white hover:bg-slate-200 flex justify-between" do %>
+              <div class="whitespace-nowrap overflow-hidden text-ellipsis" >
+                <%= b.name %>
+              </div>
+              <div>
+                <span class="font-bold <%= b.balance < 0 ? "text-red-600" : "text-green-600" %>" ><%= presentableNum(b.balance) %></span>
+                <span>></span>
+              </div>
+            <% end %>
+          <% end %>
+      </div>
+
+      <% unless @accounts_closed.empty? %>
+        <div id="accounts_closed" class="mb-3 bg-white divide-y">
+          <div class="px-4 flex justify-between bg-white sticky top-0 font-bold">
+            <div class="whitespace-nowrap overflow-hidden">Closed</div>
+            <div>
+              <%= presentableNum(@accounts_closed.sum(:balance)) %>
+            </div>
+          </div>
+
+            <% @accounts_closed.each do |b| %>
+              <%= link_to trxes_path(account_id: b.id), class:"px-4 py-2 bg-white hover:bg-slate-200 flex justify-between" do %>
+                <div class="whitespace-nowrap overflow-hidden text-ellipsis" >
+                  <%= b.name %>
+                </div>
+                <div>
+                  <span class="font-bold <%= b.balance < 0 ? "text-red-600" : "text-green-600" %>" ><%= presentableNum(b.balance) %></span>
+                  <span>></span>
+                </div>
+              <% end %>
+            <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

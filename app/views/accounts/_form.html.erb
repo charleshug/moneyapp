@@ -1,0 +1,44 @@
+<div class="grow bg-white">
+  <%= form_with(model: account, data: { slideover_target: 'form'}) do |f| %>
+    <div class="">
+      <h3 class="p-2 text-black font-bold"><%= account.persisted? ? "Edit " : "New " %>Account</h3>
+    </div>
+    <div class="p-2">
+      <%= render 'shared/errors', object: account %>
+      
+      <div class="p-2">
+        <div><%= f.label :name, "Name:" %></div>
+        <div><%= f.text_field :name, class: "w-full sm:w-52" %></div>
+      </div>
+      <% unless account.persisted? %>
+        <hr>
+        <div class="p-2">
+          <div class="inline-block">
+            <div><%= f.label :starting_balance, "Starting Balance:" %></div>
+            <div><%= f.number_field :starting_balance, :step => 0.01, :value => 0, class: "w-full sm:auto" %></div>
+          </div>
+          <div class="inline-block">
+            <div><%= f.label :starting_date, "Starting Date:" %></div>
+            <div><%= f.date_field :starting_date, :value => Date.today %></div>
+          </div>
+          <div class="italic">This creates an opening balance entry.</div>
+        </div>
+      <% end %>
+      <hr>
+      <div class="p-2">
+        <div>
+          <%= f.label :on_budget, "On-Budget" %>
+          <%= f.check_box :on_budget %>
+        </div>
+      </div>
+      <div class="p-2">
+        <div>
+          <%= f.label :closed, "Closed" %>
+          <%= f.check_box :closed %>
+        </div>
+    </div>
+    <div class="text-black font-bold overflow-auto">
+      <%= f.submit  class:"bg-[#e7e7e7] float-right p-2 cursor-pointer border border-black rounded" %>
+    </div>
+  <% end %>
+</div>

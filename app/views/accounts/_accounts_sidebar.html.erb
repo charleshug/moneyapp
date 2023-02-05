@@ -1,0 +1,6 @@
+<%= render 'accounts/account_sidebar_group', accounts_name: "Budget", accounts: @accounts_onBudget %>
+<%= render 'accounts/account_sidebar_group', accounts_name: "Off-Budget", accounts: @accounts_offBudget %>
+<%= render 'accounts/account_sidebar_group', accounts_name: "Closed", accounts: @accounts_closed unless @accounts_closed.empty? %>
+
+<%= render 'accounts/add_account' %>
+<%= render 'trxes/add_trx_btn' %>
