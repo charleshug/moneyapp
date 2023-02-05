@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  amount: 1
+  memo: MyString
+  trx: one
+  category: one
+  line_type: MyString
+
+two:
+  amount: 1
+  memo: MyString
+  trx: two
+  category: two
+  line_type: MyString
