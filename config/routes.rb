@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  root "budgets#index"
+  resources :ledgers, only: [:index, :edit, :update]
+  get 'budgets/index'
   get 'categories/index'
   get 'categories/new'
   get 'categories/show'
@@ -22,5 +25,6 @@ Rails.application.routes.draw do
 
   resources :accounts
   resources :categories
+  resources :budgets, only: [:index]
   resources :vendors
 end
