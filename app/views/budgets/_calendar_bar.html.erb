@@ -1,0 +1,40 @@
+<div class='w-full mx-auto px-5 bg-[#dbdbdb] flex items-center justify-between'>
+
+  <%= link_to budgets_path(:period => (@given_date << 1) ), class: "border border-2 px-2 rounded bg-inherit hover:bg-slate-500 hover:text-white" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" data-sidebar-target="budgetListArrow" 
+        class="h-5 w-5 rotate-180" 
+        viewBox="0 0 16 16" 
+        fill="currentColor" 
+        title="account_arrow">
+      <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+    </svg>
+  <% end %>
+
+  <div class="grow flex items-center justify-between border divide-x">
+    <div class="px-1 bg-[#2e3538] text-[#9a9a9a] font-bold"><%= @given_date.year %></div>
+    
+    <div class="grow flex justify-between divide-x">
+      <% (1..12).each do |m| %>
+        <% temp_period = Date.new(@given_date.year,m) %>
+        <% if temp_period == @given_date || temp_period == @given_date << 1 || temp_period == @given_date >> 1 #TODO: must be better way to set background color of selected period%>
+          <%= link_to Date::MONTHNAMES[m], budgets_path(:period => temp_period), 
+                        class: "grow font-bold bg-[#0082cb] text-center underline-offset-2 hover:bg-slate-500 text-white" %>
+        <% else %>
+          <%= link_to Date::MONTHNAMES[m], budgets_path(:period => temp_period), 
+                        class: "grow font-bold bg-[#49575e] text-center underline-offset-2 hover:bg-slate-500 text-white" %>
+        <% end %>
+      <% end %>
+    </div>
+
+  </div>  
+
+  <%= link_to budgets_path(:period => (@given_date >> 1) ), class: "border border-2 px-2 rounded bg-inherit hover:bg-slate-500 hover:text-white" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" data-sidebar-target="budgetListArrow" 
+        class="h-5 w-5"
+        viewBox="0 0 16 16" 
+        fill="currentColor" 
+        title="account_arrow">
+      <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+    </svg>
+  <% end %>
+</div>

@@ -1,0 +1,40 @@
+<% trxes = Trx.registerItems.category_id(Category.income).period(date) %>
+<div data-dropdown-target="menu" class="absolute right-0 mt-2 hidden z-10">
+      <div class="bg-white shadow rounded border overflow-hidden divide-y">
+        <!-- Add / Edit budget logic -->
+        <div class="px-2 py-1 bg-[#f5f5f5] font-bold text-lg text-slate-500">
+          Income for <%= date.strftime("%b") %>
+        </div>
+        <div>
+          <table class="text-black">
+            <tr class="bg-[#15323c] text-gray-300">
+              <th class="text-center">Date</th>
+              <th class="text-center">Account</th>
+              <th class="text-center">Vendor</th>
+              <th class="text-center">Amount</th>
+            </tr>
+            <% trxes.order(date: :desc).each do |trx| %>
+              <% if trx.category.name == "Split" %>
+              <% displayAmount = trx.lines.where(categories: Category.income).sum(:amount) %>
+                <tr>
+                  <td class="px-1 text-left"><%= trx.date.strftime("%b %d") %></td>
+                  <td class="px-1 text-left"><%= trx.account.name %></td>
+                  <td class="px-1 text-left"><%= "[Split] " + trx.vendor.name %></td>
+                  <td class="px-1 text-right"><%= presentableNum(displayAmount) %></td>
+                </tr>
+              <% else %>
+                <tr>
+                  <td class="px-1 text-left"><%= trx.date.strftime("%b %d") %></td>
+                  <td class="px-1 text-left"><%= trx.account.name %></td>
+                  <td class="px-1 text-left"><%= trx.vendor.name %></td>
+                  <td class="px-1 text-right"><%= presentableNum(trx.amount) %></td>
+                </tr>
+              <% end %>
+            <% end %>
+          </table>
+        </div>
+        <div class="px-2 py-1 bg-slate-200 flex justify-end gap-2">
+          <%= link_to 'Show', trxes_path(period: date, trxes: "income" ), class:"p-2 rounded border border-black text-black bg-slate-300 hover:bg-slate-400" %>
+        </div>
+      </div>
+    </div>

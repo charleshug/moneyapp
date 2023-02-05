@@ -1,0 +1,45 @@
+<div id="budget-detail" 
+  class="overflow-y-auto grid grid-cols-[1fr_max-content_max-content]" >
+  <% currentParent = ""; Category.top_level.not_hidden.budget.each do |p| %>
+    <% parentData = @currentData[@given_date.year][@given_date.month][:parents][p.name] %>
+
+    <div class="contents parent-group">
+      <% budgetAmount = parentData[:total][:budget] %>
+      <% balanceAmount = parentData[:total][:balance] %>
+
+      <div id="parent_<%= dom_id p %>" class="contents">
+        <div class="p-2 whitespace-nowrap overflow-hidden text-ellipsis sticky top-0 font-bold bg-white">
+          <%= p.name %>
+        </div>
+        <div class="py-2 sticky top-0 bg-white text-right">
+          <div class="text-xs leading-2">Budgeted</div>
+          <div class="leading-3 font-bold"><%=presentableNumDollar(budgetAmount) %></div>
+        </div>
+
+        <%= link_to trxes_path(period: @given_date, parent_id: p), 
+          class: "p-2 sticky top-0 bg-white text-right" do %>
+          <div class="text-xs leading-2">Available</div>
+          <div class="leading-3 font-bold"><%=presentableNumDollar(balanceAmount) %></div>
+        <% end %>
+      </div>
+
+      <% p.subcategories.not_hidden.each do |sub| %>
+        <% sub_data = parentData[:subcategories][sub.name] %>
+        <% sub_budget = sub_data[:budget] %>
+        <% sub_balance = sub_data[:balance] %>
+
+        <div id="sub_<%= dom_id sub %>" class="contents">
+          <div class="p-2 bg-white whitespace-nowrap overflow-hidden text-ellipsis text-sm font-bold"><%= sub.name %></div>
+          <div class="py-2 bg-white text-right font-bold text-sky-500"><%= presentableNum(sub_budget) %></div>
+          <div class="p-2 bg-white text-right">
+            <span class="font-bold <%= "px-2 py-1 bg-red-600 rounded-lg text-white" if sub_balance < 0%>">
+              <%= presentableNum(sub_balance) %>
+            </span>
+          </div>  
+        </div>
+      <% end %>
+
+    </div>
+  <% end %>
+
+</div>

@@ -1,0 +1,79 @@
+<!-- Drop down top container -->
+<div class="grow basis-0 flex justify-end">
+  <div class="relative" data-controller="dropdown">
+    <div class="select-none"
+         data-action="click->dropdown#toggle click@window->dropdown#hide"
+         data-dropdown-target="button"
+         role="button" 
+         tabindex="0" >
+      <span class="appearance-none flex items-center inline-block text-sky-500 font-bold">
+        <svg width="24px" height="24px" viewBox="0 0 16 16" fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <path d="M8 1c3.9 0 7 3.1 7 7s-3.1 7-7 7-7-3.1-7-7 3.1-7 7-7zM8 0c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8v0z"></path>
+          <path d="M4 7h2v2h-2v-2z"></path>
+          <path d="M7 7h2v2h-2v-2z"></path>
+          <path d="M10 7h2v2h-2v-2z"></path>
+        </svg>
+      </span>
+    </div>
+    <!-- BEGIN Menu section -->
+    <div data-dropdown-target="menu" class="absolute right-0 mt-2 hidden z-10">
+      <div class="bg-white shadow rounded border overflow-hidden divide-y">
+        <!-- Add / Edit budget logic -->
+        <% if Trx.budgetItems.period(@given_date).empty? %>
+          <%= link_to new_trx_path(trx: {date: "#{@given_date}",
+                                memo: "Budget",
+                                vendor_id: "#{Vendor.find_by(name: "Budget").id}",
+                                account_id: "#{Account.find_by(name: "Budget").id}",
+                                category_id: "#{Category.find_by(name: "Split").id}"
+                              }), 
+              data: { action:"click->dropdown#toggle click->slideover#open", turbo_frame:"slideover" },
+              class: 'p-2 text-gray-900 bg-white hover:bg-gray-300 whitespace-nowrap flex items-center gap-2 justify-between' do %>
+                <span>
+                  Create Budget
+                </span>
+                <svg width="16px" height="16px" viewBox="0 0 16 16" fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <path d="M1 11.9l-1 4.1 4.1-1 9.2-9.2-3.1-3.1-9.2 9.2zM1.5 15l-0.4-0.5 0.4-2 2 2-2 0.5zM10.9 4.4l-8.1 8-0.6-0.6 8.1-8 0.6 0.6z"></path>
+                  <path d="M15.3 0.7c-1.1-1.1-2.6-0.5-2.6-0.5l-1.5 1.5 3.1 3.1 1.5-1.5c0-0.1 0.6-1.5-0.5-2.6zM13.4 1.6l-0.5-0.5c0.6-0.6 1.1-0.1 1.1-0.1l-0.6 0.6z"></path>
+                </svg>
+          <% end %>
+        <% else %>
+          <%= link_to edit_trx_path(Trx.budgetItems.period(@given_date).first), 
+              data: { action:"click->dropdown#toggle click->slideover#open", turbo_frame:"slideover" },
+              class: 'p-2 text-gray-900 bg-white hover:bg-gray-300 whitespace-nowrap flex items-center gap-2 justify-between' do %>
+                <span>
+                  Edit Budget
+                </span>
+                <svg width="16px" height="16px" viewBox="0 0 16 16" fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <path d="M1 11.9l-1 4.1 4.1-1 9.2-9.2-3.1-3.1-9.2 9.2zM1.5 15l-0.4-0.5 0.4-2 2 2-2 0.5zM10.9 4.4l-8.1 8-0.6-0.6 8.1-8 0.6 0.6z"></path>
+                  <path d="M15.3 0.7c-1.1-1.1-2.6-0.5-2.6-0.5l-1.5 1.5 3.1 3.1 1.5-1.5c0-0.1 0.6-1.5-0.5-2.6zM13.4 1.6l-0.5-0.5c0.6-0.6 1.1-0.1 1.1-0.1l-0.6 0.6z"></path>
+                </svg>
+          <% end %>
+        <% end %>
+
+          <!-- Note Section -->
+          <%= link_to '#', 
+            data: {action: "click->dropdown#toggle"},
+            class: 'p-2 text-gray-900 bg-white hover:bg-gray-300 whitespace-nowrap flex items-center gap-2 justify-between' do %>
+              <span>
+                Note
+              </span>
+              <svg width="16px" height="16px" class="" viewBox="0 0 16 16" fill="currentColor" title="note">
+                <path d="M10 0v4h4z"></path>
+                <path d="M9 0h-7v16h12v-11h-5v-5zM12 12h-8v-1h8v1zM12 10h-8v-1h8v1zM12 7v1h-8v-1h8z"></path>
+              </svg>
+          <% end %>
+          <!-- Auto-Fill Budget Section -->
+          <%= link_to '#', 
+            data: {action: "click->dropdown#toggle"},
+            class: 'p-2 text-gray-900 bg-white hover:bg-gray-300 whitespace-nowrap flex items-center gap-2 justify-between' do %>
+              <span>
+                Auto-fill Budget
+              </span>
+              <svg width="16px" height="16px" class="" viewBox="0 0 16 16" fill="currentColor" title="lightning">
+                <path d="M7.99 0l-7.010 9.38 6.020-0.42-4.96 7.040 12.96-10-7.010 0.47 7.010-6.47h-7.010z"></path>
+              </svg>
+          <% end %>
+      </div>
+    </div>
+  </div>
+</div>

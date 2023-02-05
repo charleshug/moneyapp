@@ -1,0 +1,139 @@
+<div class="grow min-h-0 flex flex-col" data-controller="budget-toggle">
+  <div id="budget-header">
+    <div id="budget-period" class="px-2 py-0 flex items-center justify-between bg-[#15323c] text-sky-500">
+
+      <div id="budget-left" class="grow basis-0 flex justify-around">
+      </div>
+
+      <div id="budget-date" class="flex gap-2 items-center justify-between text-sky-500">
+        <%= link_to budgets_path(:period => (date << 1).strftime("%Y-%m")), class:"hover:cursor-pointer pl-2" do %>
+          <svg class="m-auto h-4 w-4 rotate-180 " viewBox="0 0 16 16" fill="currentColor" title="chevron-right">
+            <path d="M13.1 8l-8 8-2.2-2.1 5.9-5.9-5.9-5.9 2.2-2.1z"/>
+          </svg>
+        <% end %>  
+        <div class="flex gap-2 items-center font-bold text-sky-500 text-lg sm:text-xl whitespace-nowrap">
+          <%#= @given_date.strftime("%Y %b") %>
+          <%= form_with url: "/budgets", method: :get do |form| %>
+          <input type="month" id="period" name="period"
+            min="2019-01"
+            max="2023-12" 
+            value="<%= @given_date.strftime('%Y-%m')%>"
+            class="bg-inherit"
+            pattern="[0-9]{4}-[0-9]{2}"
+            data-controller="budget-date-select"
+            onchange="this.form.submit();"
+          />
+          <% end %>
+          <!--
+          <%#= form_with url: "/budgets", method: :get do |form| %>
+            TODO: use input type="month" when fully support across browsers
+            <%#= select_date @given_date, 
+            #{ prefix: :period,
+            #  order: [:year, :month],
+            #},              
+            #{ id: 'period',
+            #  name: 'period',
+            #  class: "bg-inherit p-0",
+            #  onchange: 'this.form.submit()'
+            #} %>
+            -->
+          <%# end %>
+          
+        </div>
+        <%= link_to budgets_path(:period => (@given_date >> 1).strftime("%Y-%m")), class:"hover:cursor-pointer pr-2" do %>
+          <svg class="m-auto h-4 w-4" viewBox="0 0 16 16" fill="currentColor" title="chevron-right">
+            <path d="M13.1 8l-8 8-2.2-2.1 5.9-5.9-5.9-5.9 2.2-2.1z"/>
+          </svg>
+        <% end %>
+      </div>
+
+      <div id="budget-right" class="grow basis-0 flex justify-end font-bold">
+        <%= render 'edit_dropdown' %>
+      </div>
+    </div>
+    
+    <% prevAvailable = data[:dashboard][:prevAvailable] %>
+    <% prevOverspent = data[:dashboard][:prevOverspent] %>
+    <% currIncome    = data[:dashboard][:currIncome] %>
+    <% currBudget    = data[:dashboard][:currBudget] %>
+    <% currAvailable = data[:dashboard][:currAvailable] %>
+    <% budgetAmount  = data[:total][:budget] %>
+    <% actualAmount  = data[:total][:actual] %>
+    <% balanceAmount = data[:total][:balance] %>
+    
+    <div id="budget-header" class="px-2 bg-[#15323c]" data-controller="budget-dashboard">
+      <div id="budget-dashboard" data-budget-dashboard-target="dashboard" class="text-gray-300 border-t border-sky-500 hidden">
+        <div class="font-bold flex justify-between items-center bg-[#15323c]">
+          <div>From <%= (date <<1).strftime("%b") %></div>
+          <div class="text-xl <%= prevAvailable < 0 ? "text-red-600" : "text-green-600" %>">
+            <%= presentableNumDollar(prevAvailable) %>
+          </div>
+        </div>
+        <div class="font-bold flex justify-between items-center bg-[#15323c]">
+          <div>Overspent in <%= (date <<1).strftime("%b") %></div>
+          <div class="text-xl <%= prevOverspent < 0 ? "text-red-600" : "text-gray-400" %>">
+            <%= presentableNumDollar(prevOverspent) %>
+          </div>
+        </div>
+
+        <%#= link_to trxes_path(period: date, trxes: "income"), class: "font-bold flex justify-between items-center bg-[#15323c]" do %>
+        <div class="relative" data-controller="dropdown">
+          <div class="font-bold flex justify-between items-center bg-[#15323c]"
+            data-action="click->dropdown#toggle click@window->dropdown#hide"
+            data-dropdown-target="button">
+            <div>Income for <%= date.strftime("%b") %></div>
+            <div class="text-xl <%= currIncome < 0 ? "text-red-600" : "text-green-600" %>">
+              <%= presentableNumDollar(currIncome) %>
+            </div>
+          </div>
+          <!-- DROP DOWN MENU-->
+          <%= render 'budget_income_dropdown', date: date %>
+        </div>
+        <%# end %>
+
+        <div class="font-bold flex justify-between items-center bg-[#15323c]">
+          <div>Budgeted in <%= date.strftime("%b") %></div>
+          <div class="text-xl <%= currIncome < 0 ? "text-red-600" : "text-gray-400" %>">
+            <%= presentableNumDollar(currBudget) %>
+          </div>
+        </div>
+
+        <div id="budget-available" class="py-0 font-bold flex justify-between items-center bg-[#15323c]">
+          <div>
+            <%= currAvailable < 0 ? "Over Budgeted" : "To Be Budgeted" %>
+          </div>
+          <div class="text-xl <%= currAvailable < 0 ? "text-red-600" : "text-green-600" %>">
+            <%= presentableNumDollar(currAvailable) %>
+          </div>
+        </div>
+      </div>        
+      
+      <div id="budget-totals" class="flex justify-between font-bold text-gray-300 bg-[#15323c] border-t border-sky-500"
+            data-action="click->budget-dashboard#toggle">
+        <div class="flex flex-col items-center">
+          <div>Budgeted</div>
+          <div><%= presentableNumDollar(budgetAmount) %></div>
+        </div>
+        <%= link_to trxes_path(:period => date, :trxes => "expense"), class:"flex flex-col items-center" do %>
+          <div>Actual</div>
+          <div class="<%= actualAmount < 0 ? "text-red-600" : "" %>">
+            <%= presentableNumDollar(actualAmount) %>
+          </div>
+        <% end %>
+        <div class="flex flex-col items-center">
+          <div>Balance</div>
+          <div><%= presentableNumDollar(balanceAmount) %></div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+
+  <%#= render 'budget_mobile_detail_flex' %>
+  <%#= render 'budget_mobile_detail_grid' %>
+  <%#= render 'budget_mobile_detail_grid2' %>
+  <%= render 'budget_mobile_detail_grid3' %>
+
+
+</div>

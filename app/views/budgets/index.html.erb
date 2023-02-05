@@ -1,0 +1,5 @@
+<% provide(:title, "Budgets") %>
+<div id="budget_index" class="shrink min-h-0 flex flex-col ">
+  <%#= render 'budget_desktop_main' %>
+  <%= render 'budget_mobile_main', data:@currentData[@given_date.year][@given_date.month],date:@given_date %>
+</div>
