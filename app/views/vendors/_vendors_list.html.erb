@@ -1,0 +1,18 @@
+<div class="grow bg-white">
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th></th>
+    </tr>
+    <% vendors.each do |v| %>
+      <tr>
+        <td><%= v.id %></td>
+        <td><%= v.name %></td>
+        <td>
+          <%= link_to 'Edit', edit_vendor_path(v) %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

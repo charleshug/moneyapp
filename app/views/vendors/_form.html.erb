@@ -1,0 +1,10 @@
+<div class="grow bg-white">
+  <%= form_with(model: vendor) do |f| %>
+    <div>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
+
+    <%= f.submit class:"cursor-pointer border border-black rounded"%>
+  <% end %>
+</div>

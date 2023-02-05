@@ -1,0 +1,5 @@
+<% provide(:title, "Vendors") %>
+<%= render 'form', vendor: @vendor %>
+<%= form_with(model: @vendor, local:true, method: "delete") do |f| %>
+  <%= f.submit 'Delete' %>
+<% end %>
