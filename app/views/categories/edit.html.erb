@@ -1,0 +1,5 @@
+<% provide(:title, "Categories") %>
+<%= render 'form', category: @category %>
+<%= form_with(model: @category, local:true, method: "delete") do |f| %>
+  <%= f.submit 'Delete' %>
+<% end %>

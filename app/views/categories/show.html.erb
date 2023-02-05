@@ -1,0 +1,23 @@
+<% provide(:title, "Categories") %>
+<h1>Categories#show</h1>
+<div>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Parent</th>
+      <th>Category</th>
+      <th>Hidden</th>
+    </tr>
+      <tr>
+        <td><%= @category.id %></td>
+        <% if @category.parent_id == nil %>
+          <td><%=@category.name %></td>
+          <td></td>
+        <% else %>
+          <td><%=@category.parent.name %></td>
+          <td><%=@category.name %></td>
+        <% end %>
+        <td><%= @category.hidden %></td>
+      </tr>
+  </table>
+</div>

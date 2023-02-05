@@ -1,0 +1,25 @@
+<div class="bg-white">
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Parent</th>
+      <th>Category</th>
+      <th>Hidden</th>
+      <th></th>
+    </tr>
+    <% categories.each do |c| %>
+      <tr>
+        <td><%= c.id %></td>
+        <% if c.parent_id == nil %>
+          <td><%=c.name %></td>
+          <td></td>
+        <% else %>
+          <td><%=c.parent.name %></td>
+          <td><%=c.name %></td>
+        <% end %>
+        <td><%= c.hidden %></td>
+        <td><%= link_to 'Edit', edit_category_path(c) %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

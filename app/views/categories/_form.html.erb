@@ -1,0 +1,24 @@
+<div class="grow p-2 bg-white">
+  <%= form_with(model: category) do |f| %>
+    <div>
+      <%#= f.label :parent_id %>
+      <%= f.collection_select :parent_id,
+                              Category.top_level.budget.not_hidden,
+                              :id,
+                              :name, 
+                              :include_blank => 'New Top Level Category' %>
+    </div>
+    <div>
+      <%#= f.label :name %>
+      <%= f.text_field :name, :placeholder => 'Category Name' %>
+    </div>
+    <% if category.name %>
+      <div>
+        <%= f.label :hidden, "Hide" %>
+        <%= f.check_box :hidden %>
+      </div>
+    <% end %>
+
+    <%= f.submit class:"float-right cursor-pointer border border-black rounded"%>
+  <% end %>
+</div>

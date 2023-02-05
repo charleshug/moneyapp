@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'categories/index'
+  get 'categories/new'
+  get 'categories/show'
+  get 'categories/edit'
   
   #get "/trxes/clear_filters", to: "trxes#clear_filters", as: :clear_filters
   get "/trxes/clear_filters", to: "trxes#clear_filters", as: :clear
@@ -15,7 +19,8 @@ Rails.application.routes.draw do
   #post "/trxes(/:id)/build/:association", to: "trxes#build", as: :build_trx
   
   #post 'trxes(/:id)/build/:association', to: 'trxes#build', as: :build_trx
-  
+
   resources :accounts
+  resources :categories
   resources :vendors
 end
