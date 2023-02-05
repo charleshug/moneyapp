@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2023-02-05
+  amount: 1
+  memo: MyString
+  account: one
+  category: one
+  vendor: one
+
+two:
+  date: 2023-02-05
+  amount: 1
+  memo: MyString
+  account: two
+  category: two
+  vendor: two
