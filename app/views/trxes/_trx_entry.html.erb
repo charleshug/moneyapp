@@ -1,0 +1,15 @@
+<div class="flex px-6 justify-between items-baseline bg-gray-900">
+  <h3 class="text-xl text-white" id="slideover-header"><%= @trx.persisted? ? "Edit" : "New" %> Transaction</h3>
+  <button data-action="slideover#close" class="flex items-center justify-center h-12 w-12 rounded-full focus:outline-none focus:bg-gray-600 hover:bg-gray-600" aria-label="Close slideover">
+    <span class="h-7 w-7 text-white">X</span>
+  </button>
+</div>
+<div class="mt-4 px-4 text-gray-700">
+  <div id="slideover-content">
+    <%= form_tag import_trxes_path, multipart: true do %>
+      <%= file_field_tag :file %>
+      <%= submit_tag %>
+    <% end %>
+    <%= render 'form_mobile', trx:@trx %>
+  </div>
+</div>
