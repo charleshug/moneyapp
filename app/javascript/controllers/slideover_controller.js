@@ -7,11 +7,19 @@ export default class extends Controller {
   connect() {
     this.backgroundHtml = this.backgroundHTML()
     this.visible = false
+    document.addEventListener("keydown", this.closeHandler.bind(this))
   }
 
   disconnect() {
     if (this.visible) {
       this.close()
+    }
+    document.removeEventListener("keydown", this.closeHandler.bind(this))
+  }
+  
+  closeHandler(event) {
+    if (event.keyCode == 27) {
+      this.close();
     }
   }
 
