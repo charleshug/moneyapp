@@ -64,6 +64,11 @@ class TrxesController < ApplicationController
     #redirect_to trxes_path, status: :see_other
   end
 
+  def import
+    Trx.import(params[:file])
+    redirect_to trxes_path, notice: "Success!"
+  end
+
   def index
     session[:page]="Accounts"
 

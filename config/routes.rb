@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     post :new, on: :new #on: is non-RESTful, member route, rails guide 2.10 
     collection do
       get 'sort'
+      post :import
     end
   end 
   
