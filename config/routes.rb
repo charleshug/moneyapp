@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'settings/index'
   get 'settings', to: 'settings#index'
   root "accounts#index"
   resources :reports
