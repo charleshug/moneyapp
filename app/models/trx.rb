@@ -50,7 +50,7 @@ class Trx < ApplicationRecord
       CSV.foreach(file, headers: true) do |row|
         temp = { date: Date.parse(row["Date"]),
                  memo: row["Memo"],
-                 category: (Category.find_by(name: row["Category"]) || Category.find_by(name: "Uncategorized")),
+                 category: (Category.find_by(name: row["Category"]) || Category.find_or_create_by(name: "Uncategorized")),
                  vendor: Vendor.find_or_create_by(name: row["Vendor"]),
                  account: (Account.find_by(name: row["Account"]) ),
                  amount: row["Amount"]
@@ -62,8 +62,8 @@ class Trx < ApplicationRecord
   def self.create_starting_transaction(args)
     puts "DEBUG: Trx:#{__method__.to_s}"
     args.merge!(memo: "Starting balance",
-                vendor: Vendor.find_by(name: "Starting balance"),
-                category: Category.find_by(name: "Income")
+                vendor: Vendor.find_or_create_by(name: "Starting balance"),
+                category: Category.find_or_create_by(name: "Income")
                 )
     Trx.create!(args)
   end
