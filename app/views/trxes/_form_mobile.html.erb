@@ -1,8 +1,5 @@
 <%= form_with(model: trx, id: 'trx-form', html: {class: 'space-y-6' }, data: { slideover_target: 'form'}) do |f| %>
   <div id="attributes_container" class="px-2 grid items-center">
-    <div class="font-bold border-b-2">
-      <%= trx.persisted? ? "Edit " : "New " %>Transaction
-    </div>
     <%#= f.label :amount %>
     <%#= f.number_field :amount, :value =>(f.object.amount || "" ) %>
 
