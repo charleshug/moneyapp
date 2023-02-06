@@ -6,10 +6,6 @@
 </div>
 <div class="mt-4 px-4 text-gray-700">
   <div id="slideover-content">
-    <%= form_tag import_trxes_path, multipart: true do %>
-      <%= file_field_tag :file %>
-      <%= submit_tag %>
-    <% end %>
     <%= render 'form_mobile', trx:@trx %>
   </div>
 </div>
