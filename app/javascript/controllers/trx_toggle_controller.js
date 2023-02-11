@@ -41,11 +41,32 @@ export default class extends Controller {
         "X-CSRF-Token": token
       },
     })
-
+    this.updateClearedAmounts(this.amountTarget.innerText,this.clearedTarget.checked)
   }
 
   connect() {
     //console.log("hi")
+  }
+
+  updateClearedAmounts(TrxAmountString,clearedAction){
+    let changedAmountString = TrxAmountString
+    let changedAmount = parseInt(changedAmountString.replace("$", "").replace(".", "").replace(",", ""))
+    let clearedAmountString = document.getElementById('clearedAmount')
+    let clearedAmount = parseInt(clearedAmountString.innerText.replace("$", "").replace(".", "").replace(",",""))
+    let unclearedAmountString = document.getElementById('unclearedAmount')
+    let unclearedAmount = parseInt(unclearedAmountString.innerText.replace("$", "").replace(".", "").replace(",", ""))
+
+    if (clearedAction) {
+      clearedAmount += changedAmount;
+      unclearedAmount -= changedAmount;
+    } else {
+      clearedAmount -= changedAmount;
+      unclearedAmount += changedAmount;
+    }
+
+    const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigit: 2 })
+    clearedAmountString.innerText = formatter.format(clearedAmount/100)
+    unclearedAmountString.innerText = formatter.format(unclearedAmount/100)
   }
 
   calculateTrxTotal() {
