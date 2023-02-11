@@ -35,13 +35,13 @@
     <div class=" grow bg-[#15323c] divide-y">
       <div id="cleared" class="flex justify-between">
         <div class="text-sky-600">Cleared</div>
-        <div class="font-bold text-green-500">
+        <div class="font-bold text-white">
           <%= presentableNumDollar(trxes.where(cleared: true).sum(:amount)) %>
         </div>
       </div>
       <div id="uncleared" class="flex justify-between">
         <div class="text-sky-600">Uncleared</div>
-        <div class="font-bold text-green-500">
+        <div class="font-bold text-white">
           <%= presentableNumDollar(trxes.where(cleared: false).sum(:amount)) %>
         </div>
       </div>
