@@ -2,7 +2,8 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="trx-toggle"
 export default class extends Controller {
-  static targets = ["lines", "circle", "amount"]
+  static values = { url: String }
+  static targets = ["lines", "circle", "amount", "cleared"]
 
   toggle() {
     if (this.hasLinesTarget) {
@@ -22,11 +23,25 @@ export default class extends Controller {
   }
 
   toggleCleared() {
-    let temp_icon = this.element.getElementsByClassName('cleared-svg')[0]
-    //console.log(temp_icon)
-    temp_icon.classList.toggle('fill-green-700')
-    temp_icon.classList.toggle('fill-white')
-    temp_icon.classList.toggle('bg-green-700')
+    console.log("toggled transaction cleared")
+    // let temp_icon = this.element.getElementsByClassName('cleared-svg')[0]
+    // temp_icon.classList.toggle('fill-green-700')
+    // temp_icon.classList.toggle('fill-white')
+    // temp_icon.classList.toggle('bg-green-700')
+    let formData = new FormData()
+    formData.append("trx[cleared]", this.clearedTarget.checked)
+    console.log(formData)
+    const token = document.getElementsByName("csrf-token")[0].content;
+    fetch(this.urlValue,{
+      body:formData,
+      method: 'PATCH',
+      dataType: 'script',
+      credentials: 'include',
+      headers: {
+        "X-CSRF-Token": token
+      },
+    })
+
   }
 
   connect() {

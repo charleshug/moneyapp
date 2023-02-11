@@ -142,7 +142,7 @@ class TrxesController < ApplicationController
   private
 
   def new_trx_params
-    params.fetch(:trx, {}).permit(:id, :date, :memo, :amount, :category_id, :account_id, :vendor_id, :trxes,
+    params.fetch(:trx, {}).permit(:id, :date, :memo, :amount, :category_id, :account_id, :vendor_id, :trxes, :cleared,
                                     lines_attributes:[:id, :memo,:amount, :category_id, :_destroy])
     end
 

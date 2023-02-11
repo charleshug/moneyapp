@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_05_203905) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_11_165318) do
   create_table "accounts", force: :cascade do |t|
     t.string "name", null: false
     t.integer "balance", default: 0, null: false
@@ -70,8 +70,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_05_203905) do
     t.integer "vendor_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "cleared", default: false, null: false
     t.index ["account_id"], name: "index_trxes_on_account_id"
     t.index ["category_id"], name: "index_trxes_on_category_id"
+    t.index ["cleared"], name: "index_trxes_on_cleared"
     t.index ["date"], name: "index_trxes_on_date"
     t.index ["vendor_id"], name: "index_trxes_on_vendor_id"
   end
