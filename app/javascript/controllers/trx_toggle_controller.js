@@ -23,14 +23,14 @@ export default class extends Controller {
   }
 
   toggleCleared() {
-    console.log("toggled transaction cleared")
+    //console.log("toggled transaction cleared")
     // let temp_icon = this.element.getElementsByClassName('cleared-svg')[0]
     // temp_icon.classList.toggle('fill-green-700')
     // temp_icon.classList.toggle('fill-white')
     // temp_icon.classList.toggle('bg-green-700')
     let formData = new FormData()
     formData.append("trx[cleared]", this.clearedTarget.checked)
-    console.log(formData)
+    //console.log(formData)
     const token = document.getElementsByName("csrf-token")[0].content;
     fetch(this.urlValue,{
       body:formData,
