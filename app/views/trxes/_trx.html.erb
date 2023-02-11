@@ -41,12 +41,10 @@
       </div>
     </div>
     <div id="right" class="py-1 pl-1">
-      
       <%= check_box_tag "trx[cleared]", 1, trx.cleared, 
           { data: { action: "trx-toggle#toggleCleared",
                     trx_toggle_target: "cleared" } } %>
     </div>
-
 
   </div>
 
