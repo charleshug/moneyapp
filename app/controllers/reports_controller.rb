@@ -10,8 +10,7 @@ class ReportsController < ApplicationController
                           .reduce({}, :merge)
 
     @spending_by_category = Category.joins(subcategories: :trxes)
-                                    .merge(Trx.registerItems.nonIncome
-                                              .period(Date.new(2022,6)))
+                                    .merge(Trx.registerItems.nonIncome)
                                     .group(:name)
                                     .sum(:amount)
                                     .sort_by { |k,v| v }
