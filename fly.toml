@@ -1,4 +1,4 @@
-# fly.toml file generated for moneyapp2 on 2023-02-05T10:03:43-08:00
+# fly.toml file generated for moneyapp2 on 2023-02-13T21:44:36-08:00
 
 app = "moneyapp2"
 kill_signal = "SIGINT"

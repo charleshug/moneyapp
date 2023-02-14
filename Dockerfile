@@ -33,6 +33,7 @@ RUN bundle _${BUNDLER_VERSION}_ install && \
 # Copy application code
 COPY . .
 
+
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
