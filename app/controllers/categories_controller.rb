@@ -40,8 +40,27 @@ class CategoriesController < ApplicationController
     @category = Category.find(params[:id])    
   end
 
+  def categories_data
+    #TODO: Add date_filter capability
+    #params[:date_filter] ? @date_filter = Date.parse(params[:date_filter] + "-01") : @date_filter = Date.today.beginning_of_month
+    
+    @category_filter = params[:category_filter]
+    @categories = Category.where(parents: Category.find_by(name: @category_filter))
+    @categories = @categories.joins(:trxes)
+                             .merge(Trx.registerItems
+                                        .nonIncome
+                                        #add date filter here
+                            )
+                             .group(:name)
+                             .sum(:amount)
+                             .sort_by { |k,v| v }
+                             .map { |x,y| { x => (y/100.0).round(2) } }
+                             .reduce({}, :merge)
+    @categories_total = @categories.map { |k,v| v }.sum
+  end
+
  private
     def category_params
-      params.require(:category).permit(:name, :parent_id, :hidden)
+      params.require(:category).permit(:name, :parent_id, :hidden, :category_filter)
     end
 end

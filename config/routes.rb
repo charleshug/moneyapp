@@ -4,10 +4,6 @@ Rails.application.routes.draw do
   resources :reports
   resources :ledgers, only: [:index, :edit, :update]
   get 'budgets/index'
-  get 'categories/index'
-  get 'categories/new'
-  get 'categories/show'
-  get 'categories/edit'
   
   #get "/trxes/clear_filters", to: "trxes#clear_filters", as: :clear_filters
   get "/trxes/clear_filters", to: "trxes#clear_filters", as: :clear
@@ -27,7 +23,9 @@ Rails.application.routes.draw do
   #post 'trxes(/:id)/build/:association', to: 'trxes#build', as: :build_trx
 
   resources :accounts
-  resources :categories
+  resources :categories do
+    get 'categories_data', on: :collection
+  end
   resources :budgets, only: [:index]
   resources :vendors
 end
