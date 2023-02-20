@@ -17,6 +17,10 @@
           <div class="table-cell px-2 text-right"><%= number_to_currency(value, unit:"", delimiter: ",") %></div>
         </div>
       <% end %>
+      <div class="table-row text-[#aaacab]">
+        <div class="table-cell px-2 whitespace-nowrap">Total</div>
+        <div class="table-cell px-2 text-right"><%= number_to_currency(data.values.sum, unit:"", delimiter: ",") %></div>
+      </div>
     </div>
   </div>
 </div>
