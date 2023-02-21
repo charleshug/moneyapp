@@ -31,11 +31,11 @@ export default class extends Controller {
   }
 
   loadChart(){
-    console.log(fetch(this.urlValue + "?" + new URLSearchParams({ category_filter: this.categoryFilterValue })) 
+    fetch(this.urlValue + "?" + new URLSearchParams({ category_filter: this.categoryFilterValue }))
       .then(response => response.text())
       .then(html => {
         this.categoryTarget.innerHTML = html;
+        console.log(html)
       })
-    )
   }
 }
