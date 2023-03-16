@@ -4,6 +4,7 @@ class Ledger < ApplicationRecord
   validates :date, uniqueness: { scope: :category, message: "Category already exists for this date." }
   validate :first_of_month
 
+  before_validation :set_date_to_first_of_month
   after_create :initialize_balances
   
   scope :date, -> (date) { where(date: date )}
@@ -167,6 +168,10 @@ class Ledger < ApplicationRecord
       ledger.recalc_end_bal
       ledger.recalc_carried_bal
       ledger.recalc_forward
+  end
+
+  def set_date_to_first_of_month
+    self.date = date.beginning_of_month
   end
 
 end
