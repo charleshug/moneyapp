@@ -130,6 +130,10 @@ class Trx < ApplicationRecord
     update_attribute(:amount, 0)
   end
 
+  def is_budget?
+    get_type == "Budget"
+  end
+
   private
 
   def remove_from_account_balance
@@ -143,10 +147,6 @@ class Trx < ApplicationRecord
     # puts "DEBUG: Trx:#{__method__.to_s}, #{account.name}, account bal: #{account.balance}, amount_changed: #{amount_changed} = new amount #{amount} - amount before last save #{amount_before_last_save}"
     
     # account.increment_balance(amount_changed)
-  end
-
-  def is_budget?
-    get_type == "Budget"
   end
 
   def get_type
