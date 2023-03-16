@@ -208,7 +208,9 @@ def self.update_ledger_from_trx(trx)
   end
 
   def set_date_to_first_of_month
-    self.date = date.beginning_of_month
+    if date != date.beginning_of_month
+      self.date = date.beginning_of_month
+    end
   end
 
 end
