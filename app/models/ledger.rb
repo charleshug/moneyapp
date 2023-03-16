@@ -170,6 +170,43 @@ class Ledger < ApplicationRecord
       ledger.recalc_forward
   end
 
+def self.update_ledger_from_trx(trx)
+    puts "#{__method__.to_s}"
+    changes = trx.previous_changes.slice(:id,:date,:category_id,:amount)
+    return if changes.empty?
+    return unless trx.lines.empty?
+
+    trx.is_budget? ? balance_type = :budget : balance_type = :actual
+
+    if changes[:id]
+      #brand new trx
+      ledger = Ledger.find_or_create_by(date: trx.date.beginning_of_month, category_id: trx.category_id)
+      ledger.increment!(balance_type, trx.amount)
+      return
+    end
+
+    #only the amount changed
+    if changes[:amount] && changes[:date].nil? && changes[:category_id].nil?
+      ledger = Ledger.find_by(date: trx.date.beginning_of_month, category_id: trx.category_id)
+      amount_delta = trx.amount - changes[:amount][0]
+      ledger.update_attribute(balance_type, amount_delta)
+      return
+    end
+
+    #date or category changed and optionally amount, too
+    puts "THIRD OPTION"
+    changes[:date] && changes[:date][0]               ? prev_date   = changes[:date][0]        : prev_date    = trx.date
+    changes[:category_id] && changes[:category_id][0] ? prev_cat    = changes[:category_id][0] : prev_cat     = trx.category_id
+    changes[:amount]                                  ? prev_amount = changes[:amount][0]      : prev_amount  = trx.amount
+
+    prev_ledger = Ledger.find_by(date: prev_date.beginning_of_month, category_id: prev_cat)
+    prev_ledger.decrement!(balance_type, prev_amount)
+
+    new_ledger = Ledger.find_or_create_by(date: trx.date.beginning_of_month, category_id: trx.category_id)
+    new_ledger.increment!(balance_type, trx.amount)
+    return
+  end
+
   def set_date_to_first_of_month
     self.date = date.beginning_of_month
   end
