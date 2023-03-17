@@ -48,7 +48,7 @@ class Ledger < ApplicationRecord
   def recalc_beginning_bal
     #puts "DEBUG: #{__method__.to_s}"
     temp_beg_bal = ( previous_item&.carried_balance || 0 )
-    self.update_column(:beginning_balance, temp_beg_bal) if (temp_beg_bal != beginning_balance)
+    self.update_column(:beginning_balance, temp_beg_bal ) if ( temp_beg_bal != beginning_balance)
   end
 
   def recalc_net
