@@ -158,7 +158,6 @@ class Ledger < ApplicationRecord
 
     #carry_forward_negative_balance? ? temp = end_balance : temp = [0,end_balance].max
     self.carried_balance= get_carried_balance
-    self.save!
   end
 
   def self.recalculate_all
