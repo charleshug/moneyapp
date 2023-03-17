@@ -32,6 +32,7 @@ class Account < ApplicationRecord
 
   def self.update_account_from_trx(trx)
     changes = trx.previous_changes.slice(:id,:amount,:account_id)
+    return if changes.empty?
 
     if changes[:id]
       trx.account.increment!(:balance, trx.amount)
