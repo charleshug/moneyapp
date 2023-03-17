@@ -163,8 +163,13 @@ class Ledger < ApplicationRecord
 
   def self.recalculate_all
     #puts "DEBUG: #{__method__.to_s}"
-    Ledger.pluck(:category_id).uniq.each do |c|
-      Ledger.first_item(Category.find(c)).recalculate
+    Ledger.pluck(:category_id).uniq.each do |category|
+      list = Ledger.where(category: category).order(:date)
+      list.each do |ledger|
+        ledger.recalc_net
+        ledger.recalc_end_bal
+        ledger.recalc_carried_bal
+      end
     end
   end
 
