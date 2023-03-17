@@ -1,0 +1,34 @@
+<div class='w-full table bg-white'>
+  <div class="table-header-group">
+    <div class="table-row">
+      <div class="table-cell border">ID</div>
+      <div class="table-cell border">Category</div>
+      <div class="table-cell border">Date</div>
+      <div class="table-cell border">Beg</div>
+      <div class="table-cell border">Budget</div>
+      <div class="table-cell border">Actual</div>
+      <div class="table-cell border">Net</div>
+      <div class="table-cell border">End</div>
+      <div class="table-cell border">Carried Bal</div>
+      <div class="table-cell border">Carry Neg Bal</div>
+    </div>
+  </div>
+  <div class="table-row-group">
+    <% ledgers.each do |l| %>
+      <%= link_to edit_ledger_path(l), class: "contents" do %>
+        <div class='table-row hover:bg-slate-300'>
+          <div class="table-cell border text-center"><%= l.id %></div>
+          <div class="table-cell border whitespace-nowrap"><span class='text-xs align-top'><%= l.category_id %>.</span><span class="text-xs"><%= l.category.name %></span></div>
+          <div class="table-cell border"><%= l.date.strftime( "%b'%y") %></div>
+          <div class="table-cell border text-right pr-1"><%= presentableNum(l.beginning_balance) %></div>
+          <div class="table-cell border text-right pr-1"><%= presentableNum(l.budget) %></div>
+          <div class="table-cell border text-right pr-1"><%= presentableNum(l.actual) %></div>
+          <div class="table-cell border text-right pr-1"><%= presentableNum(l.net) %></div>
+          <div class="table-cell border text-right pr-1"><%= presentableNum(l.end_balance) %></div>
+          <div class="table-cell border text-right pr-1"><%= presentableNum(l.carried_balance) %></div>
+          <div class="table-cell border text-center"><%= l.carry_forward_negative_balance %></div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

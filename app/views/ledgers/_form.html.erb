@@ -1,0 +1,17 @@
+<div class="w-full  m-auto border border-black rounded bg-[#dbdbdb]">
+  <%= form_with(model: ledger) do |f| %>
+    <div class="bg-[#e7e7e7]">
+      <h3 class="p-2 text-black font-bold">Overspending Settings</h3>
+    </div>
+    <div class="p-2">
+      <div>
+        <p>How do you want to handle overspending for this category / month?</p>
+        <%= f.label :carry_forward_negative_balance, "Subtract it from next month's category balance?" %>
+        <%= f.check_box :carry_forward_negative_balance %>
+      </div>
+    </div>
+    <div class="bg-[#e7e7e7] text-black font-bold overflow-auto">
+      <%= f.submit  class:"float-right p-2 cursor-pointer border border-black rounded" %>
+    </div>
+  <% end %>
+</div>
