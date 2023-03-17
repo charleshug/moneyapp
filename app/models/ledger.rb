@@ -44,28 +44,26 @@ class Ledger < ApplicationRecord
 
   def recalc_beginning_bal
     #puts "DEBUG: #{__method__.to_s}"
-    self.update_column(:beginning_balance, previous_item&.carried_balance || 0)
-    #self.update_attribute(:beginning_balance, previous_item&.carried_balance || 0)
-    # self.beginning_balance = previous_item&.carried_balance || 0
+    temp_beg_bal = ( previous_item&.carried_balance || 0 )
+    self.update_column(:beginning_balance, temp_beg_bal ) if ( temp_beg_bal != beginning_balance)
   end
 
   def recalc_net
     #puts "DEBUG: #{__method__.to_s}"
-    self.update_column(:net, (budget + actual))
+    temp_net = budget + actual
+    self.update_column(:net, temp_net) if ( net != temp_net )
   end
 
   def recalc_end_bal
     #puts "DEBUG: #{__method__.to_s}"
-    end_balance = beginning_balance + net
-    self.update_column(:end_balance, end_balance)
+    temp_end_balance = beginning_balance + net
+    self.update_column(:end_balance, temp_end_balance) if ( end_balance != temp_end_balance )
   end
 
   def recalc_carried_bal
     #puts "DEBUG: #{__method__.to_s}"
-    temp = get_carried_balance
-    if carried_balance != temp
-      self.update_column(:carried_balance,temp)
-    end
+    temp_carried = get_carried_balance
+    self.update_column(:carried_balance,temp_carried) if ( carried_balance != temp_carried )
   end
 
   def get_carried_balance
@@ -154,8 +152,13 @@ class Ledger < ApplicationRecord
 
   def self.recalculate_all
     #puts "DEBUG: #{__method__.to_s}"
-    Ledger.pluck(:category_id).uniq.each do |c|
-      Ledger.first_item(Category.find(c)).recalculate
+    Ledger.pluck(:category_id).uniq.each do |category|
+      list = Ledger.where(category: category).order(:date)
+      list.each do |ledger|
+        ledger.recalc_net
+        ledger.recalc_end_bal
+        ledger.recalc_carried_bal
+      end
     end
   end
 
