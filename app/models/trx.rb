@@ -141,7 +141,7 @@ class Trx < ApplicationRecord
   end
 
   def update_account_balance
-    return unless previous_changes.slice(:amount,:account_id)
+    return unless previous_changes.slice(:amount,:account_id).empty?
     Account.update_account_from_trx(self)
     # amount_changed = amount - (amount_before_last_save || 0 )
     # puts "DEBUG: Trx:#{__method__.to_s}, #{account.name}, account bal: #{account.balance}, amount_changed: #{amount_changed} = new amount #{amount} - amount before last save #{amount_before_last_save}"
@@ -160,7 +160,7 @@ class Trx < ApplicationRecord
   end
 
   def update_ledger
-    return unless previous_changes.slice(:amount, :category_id, :date)
+    return unless previous_changes.slice(:amount, :category_id, :date).empty?
     Ledger.update_ledger_from_trx(self)
   end
 
