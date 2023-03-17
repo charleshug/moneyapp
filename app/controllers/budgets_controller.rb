@@ -12,7 +12,6 @@ class BudgetsController < ApplicationController
     end
 
     session[:page]="Budgets"
-    Ledger.recalculate_all
     
     @current_year = @given_date.year
     @current_month = @given_date.month
