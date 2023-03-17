@@ -137,10 +137,12 @@ class Trx < ApplicationRecord
   end
 
   def update_account_balance
-    amount_changed = amount - (amount_before_last_save || 0 )
-    puts "DEBUG: Trx:#{__method__.to_s}, #{account.name}, account bal: #{account.balance}, amount_changed: #{amount_changed} = new amount #{amount} - amount before last save #{amount_before_last_save}"
+    return unless previous_changes.slice(:amount,:account_id)
+    Account.update_account_from_trx(self)
+    # amount_changed = amount - (amount_before_last_save || 0 )
+    # puts "DEBUG: Trx:#{__method__.to_s}, #{account.name}, account bal: #{account.balance}, amount_changed: #{amount_changed} = new amount #{amount} - amount before last save #{amount_before_last_save}"
     
-    account.increment_balance(amount_changed)
+    # account.increment_balance(amount_changed)
   end
 
   def is_budget?

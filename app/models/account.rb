@@ -30,6 +30,30 @@ class Account < ApplicationRecord
     end
   end
 
+  def self.update_account_from_trx(trx)
+    changes = trx.previous_changes.slice(:id,:amount,:account_id)
+
+    if changes[:id]
+      trx.account.increment!(:balance, trx.amount)
+
+    elsif changes[:account_id] && changes[:amount]
+      old_account = Account.find changes[:account_id][0]
+      new_account = Account.find changes[:account_id][1]
+      old_account.decrement!(:balance, changes[:amount][0])
+      new_account.increment!(:balance, changes[:amount][1])
+    elsif changes[:account_id]
+      old_account = Account.find changes[:account_id][0]
+      new_account = Account.find changes[:account_id][1]
+      old_account.decrement!(:balance, trx.amount)
+      new_account.increment!(:balance, trx.amount)
+    elsif changes[:amount]
+      delta_amount = changes[:amount][1] - changes[:amount][0]
+      trx.account.increment!(:balance, delta_amount)
+    else
+      puts "SHOULDN'T REACH THIS"
+    end
+  end
+
   def recalculate_balance
     trxes = Trx.where(account: self)
     balance = trxes.sum(:amount)
