@@ -45,28 +45,26 @@ class Ledger < ApplicationRecord
 
   def recalc_beginning_bal
     #puts "DEBUG: #{__method__.to_s}"
-    self.update_column(:beginning_balance, previous_item&.carried_balance || 0)
-    #self.update_attribute(:beginning_balance, previous_item&.carried_balance || 0)
-    # self.beginning_balance = previous_item&.carried_balance || 0
+    temp_beg_bal = ( previous_item&.carried_balance || 0 )
+    self.update_column(:beginning_balance, temp_beg_bal) if (temp_beg_bal != beginning_balance)
   end
 
   def recalc_net
     #puts "DEBUG: #{__method__.to_s}"
-    self.update_column(:net, (budget + actual))
+    temp_net = budget + actual
+    self.update_column(:net, temp_net) if ( net != temp_net )
   end
 
   def recalc_end_bal
     #puts "DEBUG: #{__method__.to_s}"
-    end_balance = beginning_balance + net
-    self.update_column(:end_balance, end_balance)
+    temp_end_balance = (previous_item&.carried_balance || 0) + net
+    self.update_column(:end_balance, temp_end_balance) if ( end_balance != temp_end_balance )
   end
 
   def recalc_carried_bal
     #puts "DEBUG: #{__method__.to_s}"
-    temp = get_carried_balance
-    if carried_balance != temp
-      self.update_column(:carried_balance,temp)
-    end
+    temp_carried_balance = get_carried_balance
+    self.update_column(:carried_balance,temp_carried_balance) if ( carried_balance != temp_carried_balance )
   end
 
   def get_carried_balance
