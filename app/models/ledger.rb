@@ -5,7 +5,9 @@ class Ledger < ApplicationRecord
   validate :first_of_month
 
   before_validation :set_date_to_first_of_month
+  before_save :recalculate
   after_create :initialize_balances
+  after_save :recalc_forward_if_changes_to_carried_balance
   
   scope :date, -> (date) { where(date: date )}
   scope :date_thru, -> (date) { where("date < ?", date )}
@@ -100,6 +102,14 @@ class Ledger < ApplicationRecord
     end
   end
   
+  def recalc_forward_if_changes_to_carried_balance
+    #no action if changes don't carryforward to next ledger
+    return if previous_changes.slice(:carried_balance).empty?
+    #no action if no future ledger exists yet
+    return unless ledger = next_item
+    ledger.recalculate
+    ledger.save!
+  end
 
   def previous_item
     list = Ledger.where(category_id: category.id)
