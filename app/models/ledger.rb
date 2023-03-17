@@ -193,30 +193,77 @@ def self.update_ledger_from_trx(trx)
     if changes[:id]
       #brand new trx
       ledger = Ledger.find_or_create_by(date: trx.date.beginning_of_month, category_id: trx.category_id)
-      ledger.increment!(balance_type, trx.amount)
-      return
+      ledger.increment(balance_type, trx.amount).save!
+
+    elsif changes[:date] && ( trx.date.beginning_of_month != changes[:date][0].beginning_of_month )
+      if changes[:category_id]
+        if changes[:amount]
+          #date, category, amount all changed
+          puts "all changed"
+          old_date = changes[:date][0]
+          old_category_id = changes[:category_id][0]
+          old_amount = changes[:amount][0]
+          old_ledger = Ledger.find_by(date: old_date.beginning_of_month, category_id: old_category_id)
+          new_ledger = Ledger.find_or_create_by(date: trx.date.beginning_of_month, category_id: trx.category_id)
+          old_ledger.decrement(balance_type,old_amount).save!
+          new_ledger.increment(balance_type,trx.amount).save!
+        else
+          #date, category
+          puts "date, category"
+          old_date = changes[:date][0]
+          old_category_id = changes[:category_id][0]
+          old_ledger = Ledger.find_by(date: old_date.beginning_of_month, category_id: old_category_id)
+          new_ledger = Ledger.find_or_create_by(date: trx.date.beginning_of_month, category_id: trx.category_id)
+          old_ledger.decrement(balance_type,trx.amount).save!
+          new_ledger.increment(balance_type,trx.amount).save!
+        end
+      elsif changes[:amount]
+        #date, amount
+        puts "date, amount"
+          old_date = changes[:date][0]
+          old_ledger = Ledger.find_by(date: old_date.beginning_of_month, category_id: trx.category_id)
+          old_amount = changes[:amount][0]
+          new_ledger = Ledger.find_or_create_by(date: trx.date.beginning_of_month, category_id: trx.category_id)
+          old_ledger.decrement(balance_type,old_amount).save!
+          new_ledger.increment(balance_type,trx.amount).save!
+      else
+        #date only
+        puts "date only"
+          old_date = changes[:date][0]
+          old_ledger = Ledger.find_by(date: old_date.beginning_of_month, category_id: trx.category_id)
+          new_ledger = Ledger.find_or_create_by(date: trx.date.beginning_of_month, category_id: trx.category_id)
+          old_ledger.decrement(balance_type,trx.amount).save!
+          new_ledger.increment(balance_type,trx.amount).save!
+      end
+    elsif changes[:category_id]
+      if changes[:amount]
+        #category, amount
+        puts "category, amount"
+          old_category_id = changes[:category_id][0]
+          old_amount = changes[:amount][0]
+          old_ledger = Ledger.find_by(date: trx.date.beginning_of_month, category_id: old_category_id)
+          new_ledger = Ledger.find_or_create_by(date: trx.date.beginning_of_month, category_id: trx.category_id)
+          old_ledger.decrement(balance_type,old_amount).save!
+          new_ledger.increment(balance_type,trx.amount).save!
+      else
+        #category only
+        puts "category only"
+          old_category_id = changes[:category_id][0]
+          old_ledger = Ledger.find_by(date: trx.date.beginning_of_month, category_id: old_category_id)
+          new_ledger = Ledger.find_or_create_by(date: trx.date.beginning_of_month, category_id: trx.category_id)
+          old_ledger.decrement(balance_type,trx.amount).save!
+          new_ledger.increment(balance_type,trx.amount).save!
+      end
+    elsif changes[:amount]
+      puts "amount only"
+      #amount only
+          delta_amount = trx.amount - changes[:amount][0]
+          ledger = Ledger.find_by(date: trx.date.beginning_of_month, category_id: trx.category_id)
+          ledger.increment(balance_type,delta_amount).save!
+    else
+      puts "SHOULDN'T BE HERE"
     end
 
-    #only the amount changed
-    if changes[:amount] && changes[:date].nil? && changes[:category_id].nil?
-      ledger = Ledger.find_by(date: trx.date.beginning_of_month, category_id: trx.category_id)
-      amount_delta = trx.amount - changes[:amount][0]
-      ledger.update_attribute(balance_type, amount_delta)
-      return
-    end
-
-    #date or category changed and optionally amount, too
-    puts "THIRD OPTION"
-    changes[:date] && changes[:date][0]               ? prev_date   = changes[:date][0]        : prev_date    = trx.date
-    changes[:category_id] && changes[:category_id][0] ? prev_cat    = changes[:category_id][0] : prev_cat     = trx.category_id
-    changes[:amount]                                  ? prev_amount = changes[:amount][0]      : prev_amount  = trx.amount
-
-    prev_ledger = Ledger.find_by(date: prev_date.beginning_of_month, category_id: prev_cat)
-    prev_ledger.decrement!(balance_type, prev_amount)
-
-    new_ledger = Ledger.find_or_create_by(date: trx.date.beginning_of_month, category_id: trx.category_id)
-    new_ledger.increment!(balance_type, trx.amount)
-    return
   end
 
   def set_date_to_first_of_month
