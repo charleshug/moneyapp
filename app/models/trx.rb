@@ -141,7 +141,7 @@ class Trx < ApplicationRecord
   end
 
   def update_account_balance
-    return unless previous_changes.slice(:amount,:account_id).empty?
+    return if previous_changes.slice(:amount,:account_id).empty?
     Account.update_account_from_trx(self)
   end
 
@@ -156,7 +156,7 @@ class Trx < ApplicationRecord
   end
 
   def update_ledger
-    return unless previous_changes.slice(:amount, :category_id, :date).empty?
+    return if previous_changes.slice(:amount, :category_id, :date).empty?
     Ledger.update_ledger_from_trx(self)
   end
 
