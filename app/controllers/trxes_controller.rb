@@ -72,7 +72,11 @@ class TrxesController < ApplicationController
   def index
     session[:page]="Accounts"
 
-    session[:account_id]  = (params[:account_id]&.size == 1 ? params[:account_id] : params[:account_id]&.compact_blank! )  || session[:account_id]
+    if params[:account_id] && params[:account_id] == ""
+      session[:account_id] = nil
+    else
+      session[:account_id]  = (params[:account_id]&.size == 1 ? params[:account_id] : params[:account_id]&.compact_blank! )  || session[:account_id]
+    end
     session[:vendor_id]   = params[:vendor_id]    || session[:vendor_id]
     session[:category_id] = params[:category_id]  || session[:category_id]
 

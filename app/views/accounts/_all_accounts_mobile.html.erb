@@ -10,7 +10,7 @@
   <!-- Accounts details box -->
   <div id="accounts-details" class="grow min-h-0 overflow-auto bg-slate-300">
 
-    <%= link_to trxes_path, id:"accounts_header", class:"px-4 py-2 mb-3 flex justify-between bg-white font-bold" do %>
+    <%= link_to trxes_path(:account_id=>""), id:"accounts_header", class:"px-4 py-2 mb-3 flex justify-between bg-white font-bold" do %>
       <div class="whitespace-nowrap overflow-hidden text-ellipsis">All Accounts</div>
       <div>
         <span class="<%= @accounts.sum(:balance) < 0 ? "text-red-500" : "text-green-600"%>"><%= presentableNumDollar(@accounts.sum(:balance)) %></span>
