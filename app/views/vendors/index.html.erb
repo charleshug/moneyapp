@@ -1,3 +1,5 @@
 <% provide(:title, "Vendors") %>
-<%= link_to 'New Vendor', new_vendor_path %>
-<%= render 'vendors_list', vendors: @vendors %>
+<div class="bg-white">
+  <%= link_to 'New Vendor', new_vendor_path %>
+  <%= render 'vendors_list', vendors: @vendors %>
+</div>
