@@ -34,7 +34,8 @@ export default class extends Controller {
       dataType: 'script',
       credentials: 'include',
       headers: {
-        "X-CSRF-Token": token
+        "X-CSRF-Token": token,
+        "Accept": "text/vnd.turbo-stream.html"
       },
     })
     this.updateClearedAmounts(this.amountTarget.innerText,this.clearedTarget.checked)
