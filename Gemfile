@@ -60,3 +60,4 @@ group :production do
 end
 
 gem "dockerfile-rails", ">= 1.0.0", :group => :development
+gem "inline_svg"

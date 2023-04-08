@@ -2,7 +2,9 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="trx-toggle"
 export default class extends Controller {
-  static values = { url: String }
+  static values = { url: String, 
+                    cleared: Boolean
+                  }
   static targets = ["lines", "circle", "amount", "cleared"]
 
   toggle() {
@@ -29,8 +31,7 @@ export default class extends Controller {
     // temp_icon.classList.toggle('fill-white')
     // temp_icon.classList.toggle('bg-green-700')
     let formData = new FormData()
-    formData.append("trx[cleared]", this.clearedTarget.checked)
-    //console.log(formData)
+    formData.append("trx[cleared]", !this.clearedValue) // "true" or "false"
     const token = document.getElementsByName("csrf-token")[0].content;
     fetch(this.urlValue,{
       body:formData,
@@ -45,7 +46,7 @@ export default class extends Controller {
   }
 
   connect() {
-    //console.log("hi")
+    console.log(this.clearedValue)
   }
 
   updateClearedAmounts(TrxAmountString,clearedAction){
