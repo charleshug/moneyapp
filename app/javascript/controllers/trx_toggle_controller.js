@@ -40,7 +40,7 @@ export default class extends Controller {
     })
     .then(response => response.text())
     .then(text => Turbo.renderStreamMessage(text));
-    this.updateClearedAmounts(this.amountTarget.innerText,this.clearedTarget.checked)
+    this.updateClearedAmounts(this.amountTarget.innerText,!this.clearedValue)
   }
 
   connect() {
