@@ -25,11 +25,6 @@ export default class extends Controller {
   }
 
   toggleCleared() {
-    //console.log("toggled transaction cleared")
-    // let temp_icon = this.element.getElementsByClassName('cleared-svg')[0]
-    // temp_icon.classList.toggle('fill-green-700')
-    // temp_icon.classList.toggle('fill-white')
-    // temp_icon.classList.toggle('bg-green-700')
     let formData = new FormData()
     formData.append("trx[cleared]", !this.clearedValue) // "true" or "false"
     const token = document.getElementsByName("csrf-token")[0].content;
@@ -46,7 +41,6 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log(this.clearedValue)
   }
 
   updateClearedAmounts(TrxAmountString,clearedAction){
