@@ -41,19 +41,21 @@ class TrxesController < ApplicationController
 
   def update
     trx(new_trx_params)
-    if trx.save!
-      html = render_to_string(partial: 'trx', locals: {trx:trx })
-      render turbo_stream: turbo_stream.replace(
-        helpers.dom_id(trx),
-        partial: 'trx',
-        locals: { trx: trx }
-      )
-      #redirect_to trxes_path, notice: "Saved!"
-    else
-      trx.errors.full_messages.each do |e|
-        puts "DEBUG Trx Error: #{e}"
+    respond_to do |format|
+      if trx.save!
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(
+          helpers.dom_id(trx),
+          partial: 'trx',
+          locals: { trx: trx }
+        ) }
+        format.html { render_to_string(partial: 'trx', locals: {trx:trx }) }
+        #redirect_to trxes_path, notice: "Saved!"
+      else
+        trx.errors.full_messages.each do |e|
+          puts "DEBUG Trx Error: #{e}"
+        end
+        render :new
       end
-      render :new
     end
   end
 
