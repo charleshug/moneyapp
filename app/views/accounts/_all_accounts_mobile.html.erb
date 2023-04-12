@@ -44,7 +44,10 @@
           <% end %>
       </div>
 
-      <div id="accounts_off" class="mb-3 bg-white divide-y">
+      <div id="accounts_off" class="mb-3 bg-white divide-y" 
+        data-controller="sortable"
+        data-sortable-resource-name-value="account"
+        >
         <div class="px-4 flex justify-between bg-white sticky top-0 font-bold">
           <div class="whitespace-nowrap overflow-hidden">Off-Budget</div>
           <div>
@@ -53,7 +56,7 @@
         </div>
 
           <% @accounts_offBudget.each do |b| %>
-            <%= link_to trxes_path(account_id: b.id), class:"px-4 py-2 bg-white hover:bg-slate-200 flex justify-between" do %>
+            <%= link_to trxes_path(account_id: b.id), class:"px-4 py-2 bg-white hover:bg-slate-200 flex justify-between", data:{sortable_update_url:"#{update_position_path(b)}"} do %>
               <div class="whitespace-nowrap overflow-hidden text-ellipsis" >
                 <%= b.name %>
               </div>
@@ -66,7 +69,10 @@
       </div>
 
       <% unless @accounts_closed.empty? %>
-        <div id="accounts_closed" class="mb-3 bg-white divide-y">
+        <div id="accounts_closed" class="mb-3 bg-white divide-y" 
+        data-controller="sortable"
+        data-sortable-resource-name-value="account"
+        >
           <div class="px-4 flex justify-between bg-white sticky top-0 font-bold">
             <div class="whitespace-nowrap overflow-hidden">Closed</div>
             <div>
@@ -75,7 +81,7 @@
           </div>
 
             <% @accounts_closed.each do |b| %>
-              <%= link_to trxes_path(account_id: b.id), class:"px-4 py-2 bg-white hover:bg-slate-200 flex justify-between" do %>
+              <%= link_to trxes_path(account_id: b.id), class:"px-4 py-2 bg-white hover:bg-slate-200 flex justify-between", data:{sortable_update_url:"#{update_position_path(b)}"} do %>
                 <div class="whitespace-nowrap overflow-hidden text-ellipsis" >
                   <%= b.name %>
                 </div>
