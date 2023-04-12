@@ -14,7 +14,7 @@
       <div class="whitespace-nowrap overflow-hidden text-ellipsis">All Accounts</div>
       <div>
         <span class="<%= @accounts.sum(:balance) < 0 ? "text-red-500" : "text-green-600"%>"><%= presentableNumDollar(@accounts.sum(:balance)) %></span>
-        <span>></span>
+        <%= inline_svg_tag "icons/caret-right.svg", class: "h-4 w-4 inline fill-current", aria_hidden: true %>
       </div>
     <% end %>
 
@@ -38,7 +38,7 @@
               </div>
               <div>
                 <span class="font-bold <%= b.balance < 0 ? "text-red-600" : "text-green-600" %>" ><%= presentableNum(b.balance) %></span>
-                <span>></span>
+                <%= inline_svg_tag "icons/caret-right.svg", class: "h-4 w-4 inline fill-current", aria_hidden: true %>
               </div>
             <% end %>
           <% end %>
@@ -62,7 +62,7 @@
               </div>
               <div>
                 <span class="font-bold <%= b.balance < 0 ? "text-red-600" : "text-green-600" %>" ><%= presentableNum(b.balance) %></span>
-                <span>></span>
+                <%= inline_svg_tag "icons/caret-right.svg", class: "h-4 w-4 inline fill-current", aria_hidden: true %>
               </div>
             <% end %>
           <% end %>
@@ -87,7 +87,7 @@
                 </div>
                 <div>
                   <span class="font-bold <%= b.balance < 0 ? "text-red-600" : "text-green-600" %>" ><%= presentableNum(b.balance) %></span>
-                  <span>></span>
+                  <%= inline_svg_tag "icons/caret-right.svg", class: "h-4 w-4 inline fill-current", aria_hidden: true %>
                 </div>
               <% end %>
             <% end %>
