@@ -7,7 +7,7 @@
 
       <div id="budget-date" class="flex gap-2 items-center justify-between text-sky-500">
         <%= link_to budgets_path(:period => (date << 1).strftime("%Y-%m")), class:"hover:cursor-pointer pl-2" do %>
-          <%= inline_svg_tag "icons/chevron-right.svg", class: "h-4 w-4 fill-current rotate-180", aria_hidden: true %>
+          <%= inline_svg_tag "icons/caret-right.svg", class: "h-8 w-8 fill-current rotate-180", aria_hidden: true %>
         <% end %>  
         <div class="flex gap-2 items-center font-bold text-sky-500 text-lg sm:text-xl whitespace-nowrap">
           <%#= @given_date.strftime("%Y %b") %>
@@ -39,7 +39,7 @@
           
         </div>
         <%= link_to budgets_path(:period => (@given_date >> 1).strftime("%Y-%m")), class:"hover:cursor-pointer pr-2" do %>
-          <%= inline_svg_tag "icons/chevron-right.svg", class: "h-4 w-4 fill-current", aria_hidden: true %>
+          <%= inline_svg_tag "icons/caret-right.svg", class: "h-8 w-8 fill-current", aria_hidden: true %>
         <% end %>
       </div>
 
