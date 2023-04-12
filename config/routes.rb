@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   
   #post 'trxes(/:id)/build/:association', to: 'trxes#build', as: :build_trx
 
+  patch "/accounts/:id/update_position", to: "accounts#update_position", as: "update_position"
   resources :accounts
   resources :categories do
     get 'categories_data', on: :collection

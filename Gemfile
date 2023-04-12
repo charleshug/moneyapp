@@ -61,3 +61,4 @@ end
 
 gem "dockerfile-rails", ">= 1.0.0", :group => :development
 gem "inline_svg"
+gem "acts_as_list"

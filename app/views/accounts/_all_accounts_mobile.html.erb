@@ -19,7 +19,10 @@
     <% end %>
 
     <div id="accounts_rows" class="overflow-y-auto">
-      <div id="accounts_on" class="mb-3 bg-white divide-y">
+      <div id="accounts_on" class="mb-3 bg-white divide-y" 
+        data-controller="sortable"
+        data-sortable-resource-name-value="account"
+      >
         <div class="px-4 flex justify-between bg-white sticky top-0 font-bold">
           <div class="whitespace-nowrap overflow-hidden">Budget</div>
           <div>
@@ -27,9 +30,10 @@
           </div>
         </div>
 
-          <% @accounts_onBudget.each do |b| %>
-            <%= link_to trxes_path(account_id: b.id), class:"px-4 py-2 bg-white hover:bg-slate-200 flex justify-between" do %>
-              <div class="whitespace-nowrap overflow-hidden text-ellipsis" >
+          <% @accounts_onBudget.order(:position).each do |b| %>
+            <%= link_to trxes_path(account_id: b.id), class:"card px-4 py-2 bg-white hover:bg-slate-200 flex justify-between", data:{sortable_update_url:"#{update_position_path(b)}"} do %>
+              <div class="whitespace-nowrap overflow-hidden text-ellipsis"
+              >
                 <%= b.name %>
               </div>
               <div>

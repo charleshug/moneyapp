@@ -43,9 +43,15 @@ class AccountsController < ApplicationController
     redirect_to accounts_path, status: :see_other
   end
 
+  def update_position
+    @account = Account.find(params[:id])
+    @account.insert_at(account_params[:position].to_i)
+    head :ok
+  end
+
   private
     def account_params
       params.require(:account).permit(:name, :balance, :on_budget, :closed,
-                                           :starting_balance, :starting_date)
+                                           :starting_balance, :starting_date, :position)
     end
 end

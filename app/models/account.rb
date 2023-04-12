@@ -1,4 +1,6 @@
 class Account < ApplicationRecord
+  acts_as_list
+  
   validates :balance, presence: true
   validates :name, presence: true
   validates :on_budget, inclusion: { in: [true, false] }
