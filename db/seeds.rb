@@ -1,10 +1,29 @@
 #Create default vendors
-Vendor.create!(name: "Starting balance")
+
+# vendor_list = [ "Budget",
+# "Starting balance",
+# "Manual Balance Adjustment",
+# "Vendor needed",
+# "Other",
+# "Grocery Store",
+# "Gas Station",
+# "Hardware Store",
+# "Fancy Restaurant",
+# "Food Truck",
+# "Doctor's Office",
+# "Office Supply Store",
+# "Sports Arena"
+# ]
+# vendor_list.each do |vendor|
+#   Vendor.create!(name: vendor)
+# end
+# vendorBudget = Vendor.find_by(name: "Budget")
+
 vendorBudget = Vendor.create!(name: "Budget")
+Vendor.create!(name: "Starting balance")
 Vendor.create!(name: "Manual Balance Adjustment")
 Vendor.create!(name: "Vendor needed")
 Vendor.create!(name: "Other")
-
 Vendor.create!(name: "Grocery Store")
 Vendor.create!(name: "Gas Station")
 Vendor.create!(name: "Hardware Store")
@@ -13,6 +32,62 @@ Vendor.create!(name: "Food Truck")
 Vendor.create!(name: "Doctor's Office")
 Vendor.create!(name: "Office Supply Store")
 Vendor.create!(name: "Sports Arena")
+
+# categories_list = {
+#   'Income Parent': [
+#     "Available next month",
+#     "Available this month",
+#     "Income",
+#   ],
+#   #???How to include hidden: true???
+#   'Other': [
+#     "Uncategorized",
+#     "Split",
+#     "N/A - No category needed",
+#     "N/A - Off-Budget",
+#   ],
+#   '1. Everyday Expenses': [
+#     "Fuel",
+#     "Groceries",
+#     "Restaurants",
+#     "Entertainment",
+#     "Household & Cleaning",
+#     "Clothing",
+#     "MISC",
+#   ],
+#   '2. Monthly Expenses': [
+#     "Phone",
+#     "Rent",
+#     "Internet & Utilities",
+#     "News Subscriptions",
+#     "Car Registration",
+#     "Car Insurance",
+#     "Retirement-ROTH",
+#     "Utilities",
+#     "IRA payroll deduction",
+#   ],
+#   '3. Irregular Expenses': [
+#     "Gen. Investment",
+#     "Taxes",
+#   ],
+#   '4. Sinking Funds': [
+#     "Medical/Dental",
+#     "Computer Stuff",
+#     "Gifts",
+#     "Vacation",
+#     "Car Repairs & Maint",
+#     "New Phone Fund",
+#   ],
+#   'Emergency Funds': [
+#     "Emergency Fund - liquid",
+#   ]
+# }
+# categories_list.each do |parent, subcategories|
+#   temp_parent = Category.create!(name: parent)
+#   subcategories.each do |sub|
+#     Category.create!(name: sub, parent: temp_parent)
+#   end
+# end
 
 #Create default categories
 parentCat_Income        = Category.create( name: "Income Parent" )
@@ -63,6 +138,20 @@ Category.create!([
 
   { name: "Emergency Fund - liquid",   parent: parentCat_Emergency }
 ])
+
+# account_list = [
+#   { name: "ABC",        starting_balance: 1039007, starting_date: Date.new(2022,10,20) },
+#   { name: "XYZ",        starting_balance: 456,     starting_date: Date.new(2022,12,21) },
+#   { name: "Retirement", starting_balance: 10000,   starting_date: Date.new(2022,11,15), on_budget: false },
+#   { name: "cash",       starting_balance: 100,     starting_date: Date.new(2023,7,1) },
+#   { name: "credit",     starting_balance: 200,     starting_date: Date.new(2023,1,2) },
+#   { name: "Venmo",      starting_balance: 300,     starting_date: Date.new(2023,1,3) },
+#   { name: "Budget", closed: true }
+# ]
+# account_list.each do |account|
+#   Account.create!(account)
+# end
+# bankBudget = Account.find_by(name: "Budget")
 
 Account.create!( name: "ABC", starting_balance: 1039007, starting_date: Date.new(2022,10,20))
 Account.create!( name: "XYZ", starting_balance: 456, starting_date: Date.new(2022,12,21))
