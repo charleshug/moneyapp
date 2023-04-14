@@ -5,7 +5,7 @@ export default class extends Controller {
   static targets = ["formAmount","displayAmount"]
 
   connect() {
-    console.log('DEBUG: JS trx_form_controller')
+    //console.log('DEBUG: JS trx_form_controller')
     this.setDisplayAmount()
   }
 
@@ -29,7 +29,7 @@ export default class extends Controller {
   }
 
   setDisplayAmount(){
-    console.log('DEBUG: setDisplayAmount')
+    // console.log('DEBUG: setDisplayAmount')
     let displayAmount = this.displayAmountTarget
     let formAmount = this.formAmountTarget.value
 
