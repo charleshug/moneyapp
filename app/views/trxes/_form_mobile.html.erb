@@ -57,13 +57,8 @@
 
 
     <%= f.label :vendor, class: "" %>
-    <%= f.collection_select(:vendor_id, 
-                                Vendor.all,
-                                :id,
-                                :name,
-                                {},
-                                class:""
-                                ) %>
+    <%= f.collection_select :vendor_id, Vendor.all, :id, :name, {:prompt => "Select Vendor"},
+      {class: "w-full", data: { controller: "vendor-select" } } %>
     
     <%= f.label :account, "Account", class: "" %>
     <%= f.select :account_id, grouped_options_for_select(Account.order('LOWER(name)').for_select, f.object.account_id), {}, {class:""} %>
