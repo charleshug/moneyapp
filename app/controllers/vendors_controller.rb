@@ -6,10 +6,15 @@ class VendorsController < ApplicationController
 
   def create
     @vendor = Vendor.new(vendor_params)
-    if @vendor.save
-      redirect_to vendors_path
-    else
-      render 'new', status: :unprocessable_entity
+
+    respond_to do |format|
+      if @vendor.save
+        format.html { redirect_to vendors_path }
+        format.json { render json: @vendor }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @vendor.errors, status: :unprocessable_entity }
+      end
     end
   end
 

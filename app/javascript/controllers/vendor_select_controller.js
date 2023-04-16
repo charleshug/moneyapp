@@ -5,7 +5,6 @@ import TomSelect from "tom-select"
 export default class extends Controller {
   static values = {
     url: String,
-    options: Array,
   }
 
   connect() {
@@ -26,9 +25,25 @@ export default class extends Controller {
       //placeholder: "Choose Vendor", //overrides prompt specified by form template
       selectOnTab: true,
       valueField: 'id',
-      labelField: 'name', //necessary when using default render: option/item
+      labelField: 'name', //necessary when using default render: option/item.
       searchField: 'name',
       sortField: { field: "name", direction: "asc" },
+      create: function (input, callback) {
+        const data = { name: input }
+        const token = document.getElementsByName("csrf-token")[0].content;
+        fetch('/vendors', {
+          body: JSON.stringify(data),
+          method: 'POST',
+          dataType: 'script',
+          credentials: 'include',
+          headers: {
+            "X-CSRF-Token": token,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+        }).then((response) => { return response.json() })
+          .then((data) => { callback({ id: data.id, name: data.name }) })
+      },
     }
 
     this.select = new TomSelect(this.element, settings)
