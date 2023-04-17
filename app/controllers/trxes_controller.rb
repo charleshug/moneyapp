@@ -82,7 +82,7 @@ class TrxesController < ApplicationController
     session[:vendor_id]   = params[:vendor_id]    || session[:vendor_id]
     session[:category_id] = params[:category_id]  || session[:category_id]
 
-    @trxes = Trx.includes(:vendor,:category, :account, :lines).registerItems
+    @trxes = Trx.includes(:vendor,:category, :account, lines: [:category]).registerItems
       if (params[:trxes])
         case params[:trxes]
         when "expense"
@@ -127,7 +127,7 @@ class TrxesController < ApplicationController
   end
 
   def sort
-    @trxes = Trx.includes(:vendor,:category,:account,:lines)
+    @trxes = Trx.includes(:vendor,:category,:account,lines:[:category])
                 .registerItems
     if params[:column]
       @trxes = @trxes.order("#{params[:column]} #{params[:direction]}")
