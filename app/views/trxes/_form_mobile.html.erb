@@ -61,7 +61,8 @@
       {class: "w-full", data: { controller: "vendor-select" } } %>
     
     <%= f.label :account, "Account", class: "" %>
-    <%= f.select :account_id, grouped_options_for_select(Account.order('LOWER(name)').for_select, f.object.account_id), {}, {class:""} %>
+    <%= f.select :account_id, grouped_options_for_select(Account.order('LOWER(name)').for_select, f.object.account_id, :prompt => "Select Account"),
+      {}, {class:"", data: { controller: "account-select" } } %>
   
     <%= f.label :date, class: "" %>
     <%= f.date_field :date, :value => ( f.object.date || Date.today ), class:"" %>
