@@ -1,11 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
 import TomSelect from "tom-select"
 
-// Connects to data-controller="vendor-select"
+// Connects to data-controller="account-select"
 export default class extends Controller {
 
   connect() {
-    this.element.setAttribute("autocomplete", "random");
     this.initTomSelect()
   }
 
