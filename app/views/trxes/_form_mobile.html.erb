@@ -74,8 +74,9 @@
                                             :name, 
                                             :id, 
                                             :name,
-                                            { prompt: 'Category'}, 
-                                            class:""
+                                            { prompt: 'Select Category'},
+                                            class:"",
+                                            data: { controller: "category-select" }
                                             ) %>
     <% unless f.object.lines.empty? %>
       <div id="line_items" class="border-2">
