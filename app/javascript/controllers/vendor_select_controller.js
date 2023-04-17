@@ -42,7 +42,8 @@ export default class extends Controller {
             "Accept": "application/json"
           },
         }).then((response) => { return response.json() })
-          .then((data) => { callback({ id: data.id, name: data.name }) })
+          // .then((data) => { callback({ id: data.id, name: data.name }) })
+          .then((data) => { callback(data) })
       },
     }
 
