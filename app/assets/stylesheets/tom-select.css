@@ -377,6 +377,7 @@
   color: #303030;
   background: #fff;
   cursor: default;
+  font-weight: bold;
 }
 
 .ts-dropdown .create:hover,
