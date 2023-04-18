@@ -1,37 +1,23 @@
 #Create default vendors
 
-# vendor_list = [ "Budget",
-# "Starting balance",
-# "Manual Balance Adjustment",
-# "Vendor needed",
-# "Other",
-# "Grocery Store",
-# "Gas Station",
-# "Hardware Store",
-# "Fancy Restaurant",
-# "Food Truck",
-# "Doctor's Office",
-# "Office Supply Store",
-# "Sports Arena"
-# ]
-# vendor_list.each do |vendor|
-#   Vendor.create!(name: vendor)
-# end
-# vendorBudget = Vendor.find_by(name: "Budget")
-
-vendorBudget = Vendor.create!(name: "Budget")
-Vendor.create!(name: "Starting balance")
-Vendor.create!(name: "Manual Balance Adjustment")
-Vendor.create!(name: "Vendor needed")
-Vendor.create!(name: "Other")
-Vendor.create!(name: "Grocery Store")
-Vendor.create!(name: "Gas Station")
-Vendor.create!(name: "Hardware Store")
-Vendor.create!(name: "Fancy Restaurant")
-Vendor.create!(name: "Food Truck")
-Vendor.create!(name: "Doctor's Office")
-Vendor.create!(name: "Office Supply Store")
-Vendor.create!(name: "Sports Arena")
+vendor_list = [ "Budget",
+  "Starting balance",
+  "Manual Balance Adjustment",
+  "Vendor needed",
+  "Other",
+  "Grocery Store",
+  "Gas Station",
+  "Hardware Store",
+  "Fancy Restaurant",
+  "Food Truck",
+  "Doctor's Office",
+  "Office Supply Store",
+  "Sports Arena"
+]
+vendor_list.each do |vendor|
+  Vendor.create!(name: vendor)
+end
+vendorBudget = Vendor.find_by(name: "Budget")
 
 # categories_list = {
 #   'Income Parent': [
