@@ -6,7 +6,7 @@ class Line < ApplicationRecord
   belongs_to :trx
   belongs_to :category
 
-  before_save :set_line_type
+  before_validation :set_line_type
   after_save :update_trx_amount
   after_save :update_trx_category
   after_save :update_ledger
