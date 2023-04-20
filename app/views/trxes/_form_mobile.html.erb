@@ -91,7 +91,8 @@
                                                     :id, 
                                                     :name,
                                                     { prompt: 'Category'}, 
-                                                    class:"p-0 w-[200px] sm:w-base grow shrink "
+                                                    class:"p-0 w-[200px] sm:w-base grow shrink ",
+                                                      data: { controller: "category-select" }
                                                     ) %>
               <div class="flex gap-2 items-center">
                 <%= ff.number_field :amount, class:"p-0 w-[100px]" %>
