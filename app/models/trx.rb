@@ -40,23 +40,48 @@ class Trx < ApplicationRecord
     where(date: (Date.new(year,month).beginning_of_month)..(Date.new(year,month).end_of_month))
   end
 
-  
   def self.import(file)
     puts "DEBUG: Trx:#{__method__.to_s}"
-    temp_table = CSV.read(file,headers:true)
-    temp_account_list = temp_table["Account"].uniq
-    return false unless temp_account_list.all? { |a| Account.find_by(name: a) }
-      
-      CSV.foreach(file, headers: true) do |row|
-        temp = { date: Date.parse(row["Date"]),
-                 memo: row["Memo"],
-                 category: (Category.find_by(name: row["Category"]) || Category.find_or_create_by(name: "Uncategorized")),
-                 vendor: Vendor.find_or_create_by(name: row["Vendor"]),
-                 account: (Account.find_by(name: row["Account"]) ),
-                 amount: row["Amount"]
-                }
-        Trx.create!(temp)
-      end
+
+    ActiveRecord::Base.transaction do
+
+      temp_table = CSV.read(file,headers:true)
+      temp_account_list = temp_table["Account"].uniq
+      #TODO ensure all CSV file fields are unique, no repeating Vendor, Account, Date...
+      return false unless temp_account_list.all? { |a| Account.find_by(name: a) || "" }
+      uncategorized = Category.find_or_create_by(name: "Uncategorized")
+      temp_array = temp_table.map { |row| row.to_hash }
+
+      temp_array.each.with_index do |row, index|
+          if row["Date"]
+            temp_trx = {
+                date: Date.parse(row["Date"]),
+                memo: row["Memo"],
+                category: (Category.find_by(name: row["Category"]) || uncategorized ),
+                vendor: Vendor.find_or_create_by(name: row["Vendor"]),
+                account: (Account.find_by(name: row["Account"]) ),
+                amount: row["Amount"]
+                    }
+            temp_trx = Trx.new( temp_trx )
+
+            #check next rows for line items
+            temp_line_index = index + 1
+            until temp_array[temp_line_index].nil? || temp_array[temp_line_index]["Date"]
+              temp_line = {
+                  memo: temp_array[temp_line_index]["Memo"],
+                  category: (Category.find_by(name: temp_array[temp_line_index]["Category"]) || uncategorized ),
+                  amount: temp_array[temp_line_index]["Amount"]
+                          }
+              temp_trx.lines.build(temp_line)
+              temp_line_index += 1
+            end
+            temp_trx.save!
+            row["trx_id"] = temp_trx.id
+          elsif row["Account"]
+            raise ("ERROR: Trx has Account but no date")
+          end
+        end
+    end
   end
   
   def self.create_starting_transaction(args)
