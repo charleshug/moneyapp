@@ -5,16 +5,13 @@ export default class extends Controller {
   static targets = ["slideover", "form"]
 
   connect() {
-    this.backgroundHtml = this.backgroundHTML()
     this.visible = false
-    document.addEventListener("keydown", this.closeHandler.bind(this))
   }
 
   disconnect() {
     if (this.visible) {
       this.close()
     }
-    document.removeEventListener("keydown", this.closeHandler.bind(this))
   }
   
   closeHandler(event) {
@@ -25,7 +22,9 @@ export default class extends Controller {
 
   open() {
     this.visible = true
+    this.backgroundHtml = this.backgroundHTML()
     document.body.insertAdjacentHTML('beforeend', this.backgroundHtml)
+    document.addEventListener("keydown", this.closeHandler.bind(this))
     this.background = document.querySelector(`#slideover-background`)
     this.background.addEventListener("click", this.close.bind(this))
     this.toggleSlideover()
@@ -33,6 +32,7 @@ export default class extends Controller {
 
   close() {
     this.visible = false
+    this.background.removeEventListener("keydown", this.closeHandler.bind(this))
     this.toggleSlideover()
     if (this.background) {
       this.background.classList.remove("opacity-100")
