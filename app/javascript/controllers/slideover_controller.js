@@ -22,8 +22,7 @@ export default class extends Controller {
 
   open() {
     this.visible = true
-    this.backgroundHtml = this.backgroundHTML()
-    document.body.insertAdjacentHTML('beforeend', this.backgroundHtml)
+    document.body.insertAdjacentHTML('beforeend', this.backgroundHTML())
     document.addEventListener("keydown", this.closeHandler.bind(this))
     this.background = document.querySelector(`#slideover-background`)
     this.background.addEventListener("click", this.close.bind(this))
