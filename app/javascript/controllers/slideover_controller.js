@@ -27,6 +27,7 @@ export default class extends Controller {
     this.visible = true
     document.body.insertAdjacentHTML('beforeend', this.backgroundHtml)
     this.background = document.querySelector(`#slideover-background`)
+    this.background.addEventListener("click", this.close.bind(this))
     this.toggleSlideover()
   }
 
