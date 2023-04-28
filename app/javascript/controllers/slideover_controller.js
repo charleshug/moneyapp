@@ -6,6 +6,11 @@ export default class extends Controller {
 
   connect() {
     this.visible = false
+
+    // must define this.escapeKey here instead of in open() and close(), because
+    // .bind(this) used in open() and close() for 'keydown' changed the signature
+    // and the eventListener was added but its match was not found in order to be removed
+    this.escapeKey = this.closeHandler.bind(this)
   }
 
   disconnect() {
@@ -23,7 +28,7 @@ export default class extends Controller {
   open() {
     this.visible = true
     document.body.insertAdjacentHTML('beforeend', this.backgroundHTML())
-    document.addEventListener("keydown", this.closeHandler.bind(this))
+    document.addEventListener("keydown", this.escapeKey)
     this.background = document.querySelector(`#slideover-background`)
     this.background.addEventListener("click", this.close.bind(this))
     this.toggleSlideover()
@@ -31,7 +36,7 @@ export default class extends Controller {
 
   close() {
     this.visible = false
-    this.background.removeEventListener("keydown", this.closeHandler.bind(this))
+    document.removeEventListener("keydown", this.escapeKey)
     this.toggleSlideover()
     if (this.background) {
       this.background.classList.remove("opacity-100")
