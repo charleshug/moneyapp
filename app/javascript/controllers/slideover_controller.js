@@ -38,6 +38,10 @@ export default class extends Controller {
     this.visible = false
     document.removeEventListener("keydown", this.escapeKey)
     this.toggleSlideover()
+    this.removeDimmedBackground()
+  }
+
+  removeDimmedBackground() {
     if (this.background) {
       this.background.classList.remove("opacity-100")
       this.background.classList.add("opacity-0")
