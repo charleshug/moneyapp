@@ -13,16 +13,16 @@ class BudgetsController < ApplicationController
 
     session[:page]="Budgets"
     
-    @current_year = @given_date.year
-    @current_month = @given_date.month
+    # @current_year = @given_date.year
+    # @current_month = @given_date.month
 
     @previous_date = @given_date << 1
-    @previous_year = @previous_date.year
-    @previous_month = @previous_date.month
+    # @previous_year = @previous_date.year
+    # @previous_month = @previous_date.month
 
     @next_date = @given_date >> 1
-    @next_year = @next_date.year
-    @next_month = @next_date.month
+    # @next_year = @next_date.year
+    # @next_month = @next_date.month
 
     #@previousData = getBudgetData(@previous_date)
     @currentData = getBudgetData(@given_date)
