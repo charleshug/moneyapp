@@ -17,12 +17,12 @@
             class: "bg-inherit text-white border-0 decoration-none text-green-500 text-5xl" %>
       </div>
       <div id="income_expense_box" class="flex justify-between" >
-        <div class="p-2 flex-1 text-2xl text-center text-black bg-white select-none"
+        <div id="expense_box" class="p-2 flex-1 text-2xl text-center text-black bg-white select-none"
           data-toggle-type-target="expenseBox"
           data-toggle-type-change-class='bg-red-500'
           data-action="click->toggle-type#toggleExpense" >EXPENSE</div>
           <%# class="p-2 flex-1 text-2xl text-center text-red-500 bg-white">EXPENSE</div> %>
-        <div class="p-2 flex-1 text-2xl text-center text-white bg-green-500 select-none"
+        <div id="income_box" class="p-2 flex-1 text-2xl text-center text-white bg-green-500 select-none"
           data-toggle-type-target="incomeBox"
           data-toggle-type-change-class='bg-green-500' 
           data-action="click->toggle-type#toggleIncome" >INCOME</div>

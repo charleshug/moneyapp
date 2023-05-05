@@ -47,6 +47,13 @@ export default class extends Controller {
 
       this.displayAmountTarget.classList.toggle('text-green-500')
       this.displayAmountTarget.classList.toggle('text-red-500')
+
+      let displayAmount = document.querySelector('#displayAmount')
+      let trx_amount = document.querySelector('#trx_amount')
+      if (trx_amount.value < 0) {
+        trx_amount.value = -trx_amount.value
+        displayAmount.innerHTML = displayAmount.innerHTML.replace("-", "")
+      }
     }
   }
 
@@ -64,6 +71,13 @@ export default class extends Controller {
 
       this.displayAmountTarget.classList.toggle('text-green-500')
       this.displayAmountTarget.classList.toggle('text-red-500')
+
+      let displayAmount = document.querySelector('#displayAmount')
+      let trx_amount = document.querySelector('#trx_amount')
+      if (trx_amount.value > 0) {
+        trx_amount.value = -trx_amount.value
+        displayAmount.innerHTML = "-" + displayAmount.innerHTML
+      }
     }
   }
 }

@@ -36,6 +36,22 @@ export default class extends Controller {
     const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
     displayAmount = formatter.format(formAmount / 100.00)
     this.displayAmountTarget.innerText = displayAmount
+
+    if (formAmount < 0) {
+      this.displayAmountTarget.classList.toggle('text-green-500')
+      this.displayAmountTarget.classList.toggle('text-red-500')
+
+      let expense_box = document.querySelector('#expense_box')
+      let income_box = document.querySelector('#income_box')
+      expense_box.classList.add('text-white')
+      expense_box.classList.add('bg-red-500')
+      expense_box.classList.remove('text-black')
+      expense_box.classList.remove('bg-white')
+      income_box.classList.add('text-black')
+      income_box.classList.add('bg-white')
+      income_box.classList.remove('text-white')
+      income_box.classList.remove('bg-green-500')
+    }
   }
 
 
