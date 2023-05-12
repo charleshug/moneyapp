@@ -18,7 +18,8 @@
           <td><%=c.name %></td>
         <% end %>
         <td><%= c.hidden %></td>
-        <td><%= link_to 'Edit', edit_category_path(c) %></td>
+        <td><%= link_to 'Edit', edit_category_path(c),
+              data: {action: "click->slideover#open", turbo_frame: 'slideover'} %></td>
       </tr>
     <% end %>
   </table>

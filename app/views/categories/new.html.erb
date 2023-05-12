@@ -1,2 +1,4 @@
-<% provide(:title, "Categories") %>
-<%= render 'form', category: @category %>
+<% provide(:title, "New Category") %>
+<%= turbo_frame_tag "slideover" do %>
+  <%= render 'slideover_wrapper' %>
+<% end %>

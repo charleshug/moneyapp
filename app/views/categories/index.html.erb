@@ -1,5 +1,6 @@
 <% provide(:title, "Categories") %>
 <div class="bg-white">
-  <%= link_to 'New Category', new_category_path %>
+  <%= link_to 'New Category', new_category_path,
+    data: {action: "click->slideover#open", turbo_frame: 'slideover'} %>
   <%= render 'category_list', categories: @categories %>
 </div>

@@ -13,12 +13,12 @@
       <%= f.text_field :name, :placeholder => 'Category Name' %>
     </div>
     <% if category.name %>
-      <div>
-        <%= f.label :hidden, "Hide" %>
-        <%= f.check_box :hidden %>
-      </div>
+    <div>
+      <%= f.label :hidden, "Hide" %>
+      <%= f.check_box :hidden %>
+    </div>
     <% end %>
 
-    <%= f.submit class:"float-right cursor-pointer border border-black rounded"%>
+    <%= f.submit class:"cursor-pointer border border-black rounded"%>
   <% end %>
 </div>
