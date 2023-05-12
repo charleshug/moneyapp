@@ -13,41 +13,23 @@
 
   <body id="application" data-controller="slideover" class="min-w-[350px] w-full sm:w-11/12 md:w-4/5 max-w-[800px] sm:mx-auto bg-[#2992c2] h-screen flex flex-col">
 
-    <!-- top -->
+     <!-- top -->
+    <% nav_options = [{display_name: "Budgets",     svg: "icons/tags.svg",        path: budgets_path },
+                      {display_name: "Accounts",    svg: "icons/credit-card.svg", path: accounts_path },
+                      {display_name: "Transaction", svg: "icons/plus-circle.svg", path: new_trx_path( :account_id=> params[:account_id]) },
+                      {display_name: "Reports",     svg: "icons/chart.svg",       path: reports_path },
+                      {display_name: "Settings",    svg: "icons/cog.svg",         path: settings_path }
+                      ] %>
     <aside id="top_nav" class=" fixed top-0 inset-x-0 pt-1 flex justify-between bg-white text-slate-500 ">
-     <%= link_to budgets_path, class:"flex flex-col hover:bg-slate-200  grow justify-end items-center #{"text-sky-500" if session[:page]=="Budgets"}" do %>
-        <%= inline_svg_tag "icons/tags.svg", class: "h-8 w-8 fill-current", aria_hidden: true %>
+    <% nav_options.each do |option| %>
+      <%= link_to option[:path], data:  (option[:display_name]=="Transaction" ? { action: 'click->slideover#open', turbo_frame: 'slideover' }:nil),
+      class:"flex flex-col hover:bg-slate-200  grow justify-end items-center #{"text-sky-500" if session[:page]==option[:display_name] }" do %>
+        <%= inline_svg_tag option[:svg], class: "h-8 w-8 fill-current", aria_hidden: true %>
         <div class="text-xs md:text-base">
-          Budget
+          <%= option[:display_name] %>
         </div>
       <% end %>
-      <%= link_to accounts_path, class:"flex flex-col hover:bg-slate-200  grow justify-end items-center #{"text-sky-500" if session[:page]=="Accounts"}" do %>
-        <%= inline_svg_tag "icons/credit-card.svg", class: "h-8 w-8 fill-current", aria_hidden: true %>
-        <div class="text-xs md:text-base">
-          Accounts
-        </div>
-      <% end %>
-      <%= link_to new_trx_path( :account_id => params[:account_id] ), class:"flex flex-col hover:bg-slate-200  grow justify-end items-center #{"text-sky-500" if session[:page]=="Trxes"}",
-          data: { action: 'click->slideover#open',
-                  turbo_frame: 'slideover'
-        } do %>
-          <%= inline_svg_tag "icons/plus-circle.svg", class: "h-7 w-7 fill-current", aria_hidden: true %>
-          <div class="text-xs md:text-base">
-            Transaction
-          </div>
-      <% end %>
-      <%= link_to reports_path, class:"flex flex-col hover:bg-slate-200  grow justify-end items-center #{"text-sky-500" if session[:page]=="Reports"}" do %>
-        <%= inline_svg_tag "icons/chart.svg", class: "h-8 w-8 fill-current", aria_hidden: true %>
-        <div class="text-xs md:text-base">
-          Reports
-        </div>
-      <%end%>
-      <%= link_to settings_path, class:"flex flex-col hover:bg-slate-200  grow justify-end items-center #{"text-sky-500" if session[:page]=="Settings"}" do %>
-        <%= inline_svg_tag "icons/cog.svg", class: "h-8 w-8 fill-current", aria_hidden: true %>
-        <div class="text-xs md:text-base">
-          Settings
-        </div>
-      <%end%>
+    <% end %>
     </aside>
 
     <div class="grow shrink overflow-auto mt-[53px] md:mt-[61px] flex flex-col">
