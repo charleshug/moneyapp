@@ -58,7 +58,7 @@
     <% balanceAmount = data[:total][:balance] %>
     
     <div id="budget-header" class="px-2 bg-[#15323c]" data-controller="budget-dashboard">
-      <div id="budget-dashboard" data-budget-dashboard-target="dashboard" class="text-gray-300 border-t border-sky-500 hidden">
+      <div id="budget-dashboard" data-budget-dashboard-target="dashboard" class="text-gray-300 border-t border-sky-500 ">
         <div class="font-bold flex justify-between items-center bg-[#15323c]">
           <div>From <%= (date <<1).strftime("%b") %></div>
           <div class="text-xl <%= prevAvailable < 0 ? "text-red-600" : "text-green-600" %>">
