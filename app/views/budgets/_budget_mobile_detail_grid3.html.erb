@@ -1,4 +1,4 @@
-<div id="budget-detail" class="grid grid-cols-[1fr_max-content_max-content_max-content]" >
+<div id="budget-detail" class="overflow-y-auto grid grid-cols-[1fr_max-content_max-content_max-content]" >
   <% currentParent = ""; Category.top_level.not_hidden.budget.each do |p| %>
     <% parentData = @currentData[@given_date.year][@given_date.month][:parents][p.name] %>
 
