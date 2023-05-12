@@ -1,3 +1,4 @@
-<% provide(:title, "Vendors") %>
-<%= render 'form', vendor: @vendor %>
-<%= link_to 'Vendors Index', vendors_path %>
+<% provide(:title, "New Vendor") %>
+<%= turbo_frame_tag "slideover" do %>
+  <%= render 'slideover_wrapper' %>
+<% end %>

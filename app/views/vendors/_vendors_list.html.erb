@@ -10,7 +10,7 @@
         <td><%= v.id %></td>
         <td><%= v.name %></td>
         <td>
-          <%= link_to 'Edit', edit_vendor_path(v) %>
+          <%= link_to 'Edit', edit_vendor_path(v), data: {action: "click->slideover#open", turbo_frame: 'slideover'} %>
         </td>
       </tr>
     <% end %>

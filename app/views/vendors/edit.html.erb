@@ -1,6 +1,4 @@
-<% provide(:title, "Vendors") %>
-<%= render 'form', vendor: @vendor %>
-<%= form_with(model: @vendor, local:true, method: "delete") do |f| %>
-  <%= f.submit 'Delete' %>
+<% provide(:title, "Edit Vendor") %>
+<%= turbo_frame_tag "slideover" do %>
+  <%= render 'slideover_wrapper' %>
 <% end %>
-<%= link_to 'Vendors Index', vendors_path %>

@@ -1,5 +1,6 @@
 <% provide(:title, "Vendors") %>
 <div class="bg-white">
-  <%= link_to 'New Vendor', new_vendor_path %>
+  <%= link_to 'New Vendor', new_vendor_path, 
+    data: {action: "click->slideover#open", turbo_frame: 'slideover'} %>
   <%= render 'vendors_list', vendors: @vendors %>
 </div>
