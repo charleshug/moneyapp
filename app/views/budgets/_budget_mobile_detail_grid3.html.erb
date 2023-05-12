@@ -7,8 +7,9 @@
       <% actualAmount = parentData[:total][:actual] %>
       <% balanceAmount = parentData[:total][:balance] %>
 
-      <div id="parent_<%= dom_id p %>" class="contents" data-action="click->budget-detail#toggle">
-        <div class="p-2 whitespace-nowrap overflow-hidden text-ellipsis sticky top-0 font-bold bg-white">
+      <div id="parent_<%= dom_id p %>" class="contents">
+        <div class="p-2 whitespace-nowrap overflow-hidden text-ellipsis sticky top-0 font-bold bg-white"
+             data-action="click->budget-detail#toggle">
           <%= p.name %>
         </div>
         <div class="py-2 sticky top-0 bg-white text-right">
