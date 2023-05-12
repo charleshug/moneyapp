@@ -1,8 +1,5 @@
 <div class="grow bg-white">
   <%= form_with(model: account, data: { slideover_target: 'form'}) do |f| %>
-    <div class="">
-      <h3 class="p-2 text-black font-bold"><%= account.persisted? ? "Edit " : "New " %>Account</h3>
-    </div>
     <div class="p-2">
       <%= render 'shared/errors', object: account %>
       
