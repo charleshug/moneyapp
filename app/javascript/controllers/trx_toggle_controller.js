@@ -16,12 +16,33 @@ export default class extends Controller {
   }
 
   toggleSelect() {
-    this.element.classList.toggle('selected')
-    let circle_icon = this.circleTarget
-    circle_icon.classList.toggle('fill-sky-500')
-    this.element.classList.toggle('bg-slate-200')
+  //   this.element.classList.toggle('selected')
+  //   let circle_icon = this.circleTarget
+  //   circle_icon.classList.toggle('fill-sky-500')
+  //   this.element.classList.toggle('bg-slate-200')
 
     this.calculateTrxTotal()
+  }
+
+  select_all() {
+    document.querySelectorAll("#selected_trxes_ids_").forEach(function (el) {
+      el.checked = true
+    })
+    this.toggleSelect()
+  }
+
+  deselect_all() {
+    document.querySelectorAll("#selected_trxes_ids_").forEach(function (el) {
+      el.checked = false
+    })
+    this.toggleSelect()
+  }
+
+  toggle_selected() {
+    document.querySelectorAll("#selected_trxes_ids_").forEach(function (el) {
+      el.checked = !el.checked
+    })
+    this.toggleSelect()
   }
 
   toggleCleared() {
@@ -44,6 +65,7 @@ export default class extends Controller {
   }
 
   connect() {
+    this.calculateTrxTotal()
   }
 
   updateClearedAmounts(TrxAmountString,clearedAction){
@@ -68,26 +90,44 @@ export default class extends Controller {
   }
 
   calculateTrxTotal() {
-    let items = Array.from(document.getElementsByClassName('selected'))
-    let amount_array = items.flatMap(element => parseFloat(element.getElementsByClassName('trx-amount')[0].innerHTML.replace(/,/g, '')))
-    
-    const initialValue = 0 //initial value required in case array is deselected to zero items
-    let array_total = amount_array.reduce((acc, curr) => acc + curr, initialValue)
-    
-    let display_amount = ""
-    let display_text = ""
-    
-    if (!isNaN(array_total) && amount_array.length > 0 ) {
-      const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigit: 2 })
-      display_amount = formatter.format(array_total)
-      display_text = "Selected Total (" + amount_array.length + ")"      
-    }
-    
     let display_text_div = document.getElementById('trx-selected-text')
     let display_amount_div = document.getElementById('trx-selected-amount')
 
+    let all = document.querySelectorAll('.trx_item')
+    if (all.empty) {
+      display_text_div.innerText = "Selected Total ( 0 )"
+      display_amount_div.innerText = "$0.00"
+      document.querySelector('#trx-selected-box').classList.add('hidden')
+      return
+    }
+    document.querySelector('#trx-selected-box').classList.remove('hidden')
+    let sum_selected = 0
+    let count_selected = 0
+    all.forEach(function (el) {
+      let boxChecked = el.querySelector('#selected_trxes_ids_').checked
+      if (boxChecked === true) {
+        let el_amount = Number(el.querySelector('.trx-amount').innerText.replace(',', ''))
+        sum_selected += el_amount
+        count_selected += 1
+      }
+    })
+
+    if (count_selected == 0) {
+      display_text_div.innerText = "Selected Total ( 0 )"
+      display_amount_div.innerText = "$0.00"
+      document.querySelector('#trx-selected-box').classList.add('hidden')
+      return
+    }
+
+    sum_selected = Math.round(sum_selected * 100) / 100
+    const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigit: 2 })
+    let display_amount = formatter.format(sum_selected)
+
+    let display_text = "Selected Total (" + count_selected + ")"
+
     display_text_div.innerText = display_text
     display_amount_div.innerText = display_amount
+
   }
 
 }

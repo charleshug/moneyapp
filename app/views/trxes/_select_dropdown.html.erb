@@ -1,0 +1,16 @@
+<% options = [{text: "Mark Cleared",    value: "clear"},
+              {text: "Mark Uncleared",  value: "unclear"},
+              {text: "Delete",          value: "deletez"}
+] %>
+
+<div data-dropdown-target="menu" class="absolute mt-2 z-10 hidden text-black bg-white shadow rounded border overflow-hidden divide-y flex flex-col">
+  <% options.each do |option| %>
+    <% if option[:text] == "Delete" %>
+      <div class="h-1 bg-gray-400"></div>
+    <% end %>
+    <%= button_tag option[:text], name: :commit, value:"#{option[:value]}",
+      form:"trx_selection", 
+      data: {action: "click->dropdown#toggle"},
+      class: "p-2 text-left hover:bg-gray-300 whitespace-nowrap" %>
+  <% end %>
+</div>

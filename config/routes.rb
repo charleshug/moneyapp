@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     collection do
       get 'sort'
       post :import
+      put :bulk_update, to: 'trxes#bulk_update', as: 'bulk_update'
     end
   end 
   

@@ -39,6 +39,28 @@ class TrxesController < ApplicationController
     end
   end
 
+  def bulk_update
+    @selected_trxes = Trx.where(id: params[:selected_trxes_ids])
+    case params[:commit]
+    when "clear"
+      @selected_trxes.update_all(cleared: true)
+    when "unclear"
+      @selected_trxes.update_all(cleared: false)
+    when "approve"
+      # TODO
+    when "reject"
+      # TODO
+    when "change_category"
+      # TODO
+    when "change_account"
+      # TODO
+    when "delete"
+      @selected_trxes.destroy_all
+    else
+      "No valid commit message"
+    end
+  end
+
   def update
     trx(new_trx_params)
     respond_to do |format|
@@ -148,7 +170,7 @@ class TrxesController < ApplicationController
   private
 
   def new_trx_params
-    params.fetch(:trx, {}).permit(:id, :date, :memo, :amount, :category_id, :account_id, :vendor_id, :trxes, :cleared,
+    params.fetch(:trx, {}).permit(:id, :date, :memo, :amount, :category_id, :account_id, :vendor_id, :trxes, :cleared, :selected_trxes_ids,
                                     lines_attributes:[:id, :memo,:amount, :category_id, :_destroy])
     end
 

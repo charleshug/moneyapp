@@ -48,9 +48,27 @@
     </div>
   </div>
   <!-- Transaction selected box -->
-  <div id="trx-selected-box">
-    <div class="p-2 grow bg-[#15323c] text-white flex justify-between">
-      <div id="trx-selected-text"></div>
+  <div id="trx-selected-box" class="pb-1 hidden">
+    <div class="px-2 grow bg-[#15323c] text-white flex justify-between">
+      <div class="flex">
+        <!-- Drop down top container -->
+        <div class="">
+          <div class="relative" data-controller="dropdown">
+            <div class="select-none"
+                data-action="click->dropdown#toggle click@window->dropdown#hide"
+                data-dropdown-target="button"
+                role="button"
+                tabindex="0" >
+              <span class="appearance-none flex items-center inline-block text-sky-500 font-bold">
+                <%= inline_svg_tag "icons/ellipsis-circle.svg", class: "h-6 w-6 fill-current", aria_hidden: true %>
+              </span>
+            </div>
+            <!-- BEGIN Menu section -->
+            <%= render 'select_dropdown', account:account %>
+          </div>
+        </div>
+        <div id="trx-selected-text" class="px-2"></div>
+      </div>
       <div id="trx-selected-amount"></div>
     </div>
   </div>
@@ -67,8 +85,14 @@
     <% if trxes.empty?%>
     <p class="p-2 text-center">No transactions found</p>
     <% else %>
-      <% trxes.each do |trx| %>
-        <%= render 'trx', trx: trx  %>
+      <%= form_tag bulk_update_trxes_path, method: :put, id: "trx_selection", data: { controller: "trx-toggle" } do %>
+        <span>Select: </span>
+        <%= button_tag "All", type: "button", data:{action: "trx-toggle#select_all"} %>
+        <%= button_tag "None", type: "button", data:{action: "trx-toggle#deselect_all"} %>
+        <%= button_tag "Toggle", type: "button", data:{action: "trx-toggle#toggle_selected"} %>
+        <% trxes.each do |trx| %>
+          <%= render 'trx', trx: trx  %>
+        <% end %>
       <% end %>
     <% end %>
   </div>

@@ -1,4 +1,9 @@
-<div id="<%= dom_id trx %>" data-controller="trx-toggle" data-trx-toggle-url-value="<%= trx_path(trx) %>" data-trx-toggle-cleared-value="<%= trx.cleared %>">
+<div id="<%= dom_id trx %>" class="trx_item"
+                            data-controller="trx-toggle"
+                            data-trx-toggle-url-value="<%= trx_path(trx) %>"
+                            data-trx-toggle-cleared-value="<%= trx.cleared %>"
+                            data-trx-toggle-target="trxes"
+                            >
 
   <!-- Trx Date section-->
   <div class="px-2 border-t-[2px] border-gray-400 bg-white text-xs font-bold">
@@ -6,10 +11,9 @@
   </div>
   <!-- Trx section-->
   <div class="trx-section p-1 border-t-[1px] hover:bg-slate-200 flex">
-    <div id="left" data-action="click->trx-toggle#toggleSelect">
-      <svg data-trx-toggle-target="circle" class="left-side p-1 w-[24px] stroke-sky-500" viewBox="-3 -3 24 24" stroke="#444" fill="#FFF" title="circle">
-        <path d="M8 0c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8z">
-      </svg>
+    <div id="left" class="pr-2">
+      <!-- Select icon -->
+      <%= check_box_tag "selected_trxes_ids[]", trx.id, false, data:{ action: "trx-toggle#toggleSelect" } %>
     </div>
     <div id="center-trx" class="grow min-w-0">
       <div class="flex justify-between">
