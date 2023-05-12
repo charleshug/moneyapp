@@ -1,1 +1,4 @@
-<%= render 'form', ledger: @ledger %>
+<% provide(:title, "Edit Ledger") %>
+<%= turbo_frame_tag "slideover" do %>
+  <%= render 'slideover_wrapper', ledger: @ledger %>
+<% end %>

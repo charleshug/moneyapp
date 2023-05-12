@@ -14,7 +14,9 @@
   </div>
   <div class="table-row-group">
     <% ledgers.each do |l| %>
-      <%= link_to edit_ledger_path(l), class: "contents" do %>
+      <%= link_to edit_ledger_path(l),
+          data: {action: "click->slideover#open", turbo_frame: 'slideover'}, 
+          class: "contents" do %>
         <div class='table-row hover:bg-slate-300'>
           <div class="table-cell border text-center"><%= l.id %></div>
           <div class="table-cell border whitespace-nowrap"><span class='text-xs align-top'><%= l.category_id %>.</span><span class="text-xs"><%= l.category.name %></span></div>
